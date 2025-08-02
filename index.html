@@ -1129,7 +1129,7 @@
             <div class="d-flex justify-content-between align-items-center">
                 <div>
                     <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
-                    <div class="text-muted small">IMB Partners • Comprehensive Analysis • July 2025</div>
+                    <div class="text-muted small">IMB Partners • Comprehensive Analysis • August 2025</div>
                 </div>
 
                 <!-- <button class="pdf-button no-print" onclick="generatePDF()" id="pdfButton">
@@ -1360,11 +1360,6 @@
                     <div class="assessment-overview">
                         <h3>Our Proprietary Assessment Framework</h3>
                         <p class="mb-3">Our proprietary assessment evaluates your organization across four critical pillars of AI maturity. Each pillar is rigorously analyzed through evidence-based criteria, generating individual scores that aggregate into your comprehensive GREY Score™.</p>
-                        
-                        <ul class="assessment-points">
-                            <li><strong>Comprehensive evaluation:</strong> 27 issue categories including consolidated AI literacy assessment</li>
-                            <li><strong>Actionable roadmap:</strong> Prioritized initiatives with clear ROI projections</li>
-                        </ul>
                     </div>
 
                     <div class="pillars-section">
@@ -2147,9 +2142,7 @@
                         </div>
                     </div>
                 </section>
-
         
-
                 <!-- Page 5: Evidence & Documentation -->
                 <section id="evidence" class="section page-break">
                     <div class="section-header-custom">Evidence & Documentation</div>
@@ -2164,6 +2157,8 @@
                                     <li><strong>Response Rate:</strong> 100% (19 of 19 employees)</li>
                                     <li><strong>Assessment Duration:</strong> 2 weeks</li>
                                     <li><strong>Interview Sessions:</strong> 6 leadership interviews</li>
+                                    <br>
+                                    <br>
                                 </ul>
                             </div>
                         </div>
@@ -2182,38 +2177,14 @@
                         <div class="col-12">
                             <div class="highlight-section-custom">
                                 <h4>Key Quotes from Leadership</h4>
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"We get lost in Slack—can an assistant pull the action items out and drop them straight into Asana for me?"</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"I really want an AI chief-of-staff—something better than an EA—to sort email, build my to-do list and manage the calendar."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"I don’t have strong [support] —AI needs to wear some of those hats."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"Give me more prompt-engineering training … ‘How Not to Give Up’ would be the perfect title."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"Anything that gives us…automations we can just pick and use is better than us trying to spec everything from scratch."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"It’s almost like I need a personal trainer … I need the handheld model a little bit."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"[We are] literally recording thousands of transactions in Excel…massive spreadsheets…—there’s got to be a better way; just tell me where we can automate."</p>
-                                </blockquote>
-
-                                <blockquote class="blockquote">
-                                    <p class="mb-3">"Connecting all these different data sources is hugely painful and leads to errors."</p>
-                                </blockquote>
-                                
+                                <p class="mb-3">"We get lost in Slack—can an assistant pull the action items out and drop them straight into Asana for me?"</p>
+                                <p class="mb-3">"I really want an AI chief-of-staff—something better than an EA—to sort email, build my to-do list and manage the calendar."</p>
+                                <p class="mb-3">"I don’t have strong [support] —AI needs to wear some of those hats."</p>
+                                <p class="mb-3">"Give me more prompt-engineering training … ‘How Not to Give Up’ would be the perfect title."</p>
+                                <p class="mb-3">"Anything that gives us…automations we can just pick and use is better than us trying to spec everything from scratch."</p>
+                                <p class="mb-3">"It’s almost like I need a personal trainer … I need the handheld model a little bit."</p>
+                                <p class="mb-3">"[We are] literally recording thousands of transactions in Excel…massive spreadsheets…—there’s got to be a better way; just tell me where we can automate."</p>
+                                <p class="mb-3">"Connecting all these different data sources is hugely painful and leads to errors."</p>
                             </div>
                         </div>
                         <div class="col-12">
@@ -2294,8 +2265,8 @@
             errorMessage.classList.remove('hidden');
             
             // Simple validation (in a real app, this would be done on a server)
-            if ((username === 'admin' && password === ' IMB082025') || 
-                (username === 'user' && password === ' IMB082025')) {
+            if ((username === 'admin' && password === 'IMB082025') || 
+                (username === 'user' && password === 'IMB082025')) {
                 // Store login state in local storage (persists after refresh)
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('username', username);
