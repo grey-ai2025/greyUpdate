@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GREY Score™ Assessment Report</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+
+    <style>
+        /* SPARK Design System Variables */
+        :root {
+            --spark-cyan: #ADFBF6;
+            --spark-light-cyan: #e0fffe;
+            --spark-dark-gray: #434343;
+            --spark-gray: #9A9A9A;
+            
+            /* Score-based color scale */
+            --score-critical: #f5f5f5;      /* 0-30: Very light gray */
+            --score-low: #f0fdfc;           /* 31-45: Very light cyan */
+            --score-medium-low: #e0fffe;    /* 46-55: Light cyan */
+            --score-medium: #ccfcf8;        /* 56-65: Medium cyan */
+            --score-medium-high: #b3f9f3;   /* 66-75: Medium-high cyan */
+            --score-high: #ADFBF6;          /* 76-100: Full cyan */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: white;
+            color: #333;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        /* Header Styles */
+        .header-custom {
+            background: #fff;
+            border-bottom: 3px solid var(--spark-cyan);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            z-index: 1000;
+            position: sticky;
+            top: 0;
+            padding: 1.25rem 2rem;
+        }
+
+        .login-form {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 20px 60px rgba(31, 41, 55, 0.15);
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 24rem;
+            border: 1px solid #e5e7eb;
+            align-items: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            margin: 10rem auto;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: var(--spark-cyan);
+            color: rgb(0, 0, 0);
+            border: none;
+            padding: 10px 15px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #5f6b80;
+            color: white;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+        .logout-btn {
+            background-color: #ff4d4d;
+            margin-top: 20px;
+            max-width: 10rem;
+            color: white;
+        }
+        .logout-btn:hover {
+            background-color: #e60000;
+        }
+
+        /* Added class for hiding elements */
+        .hidden {
+            display: none !important;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+            color: #000;
+        }
+
+        .header-subtitle {
+            color: var(--spark-gray);
+            font-size: 0.9rem;
+        }
+
+        /* Sidebar Toggle Button */
+        .sidebar-toggle {
+            background: var(--spark-cyan);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            position: fixed;
+            left: 20px;
+            top: 110px;
+            z-index: 999;
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--spark-dark-gray);
+            color: #fff;
+        }
+
+        .sidebar-toggle.collapsed {
+            left: 20px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar-wrapper {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            height: calc(100vh - 80px);
+            width: 280px;
+            background: #fff;
+            border-right: 3px solid var(--spark-cyan);
+            transition: transform 0.3s ease;
+            z-index: 998;
+            overflow-y: auto;
+            box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+        }
+
+        .sidebar-wrapper.collapsed {
+            transform: translateX(-100%);
+        }
+
+        .sidebar-custom {
+            padding: 60px 20px 20px 20px;
+        }
+
+        .sidebar-custom h4 {
+            margin-bottom: 15px;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* PDF Generation Loading Overlay */
+        .pdf-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .pdf-overlay.active {
+            display: flex;
+        }
+
+        .pdf-loader {
+            background: white;
+            padding: 30px 50px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .pdf-loader-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--spark-cyan);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .toc-item {
+            color: #000;
+            border-left: 3px solid transparent;
+            border-radius: 0 4px 4px 0;
+            transition: all 0.3s ease;
+            margin-bottom: 0.25rem;
+            padding: 12px 15px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: block;
+        }
+
+        .toc-item:hover {
+            border-left-color: var(--spark-cyan);
+            background: #f0fdfc;
+            transform: translateX(5px);
+            color: #000;
+        }
+
+        .toc-item.active {
+            border-left-color: var(--spark-cyan);
+            background: var(--spark-cyan);
+            color: #000;
+            font-weight: bold;
+        }
+
+        /* Main Content Adjustment */
+        .main-content-wrapper {
+            margin-left: 280px;
+            transition: margin-left 0.3s ease;
+            min-height: calc(100vh - 80px);
+        }
+
+        .main-content-wrapper.expanded {
+            margin-left: 0;
+        }
+
+        /* Section/Page Styles */
+        .section {
+            min-height: calc(100vh - 80px);
+            padding: 2rem;
+            scroll-margin-top: 80px;
+        }
+
+        .page {
+            min-height: 100vh;
+            background: white;
+            padding: 40px;
+            margin-bottom: 2px;
+            display: none;
+            position: relative;
+        }
+        
+        .page.active {
+            display: block;
+        }
+
+        /* Page Header - SPARK Design */
+        .page-top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 3px solid var(--spark-cyan);
+            margin-bottom: 30px;
+        }
+        
+        .header-left {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .header-left span:first-child {
+            font-size: 24px;
+            font-weight: bold;
+            color: #000;
+        }
+        
+        .section-indicator {
+            color: var(--spark-gray);
+            font-size: 16px;
+        }
+        
+        .page-number-header {
+            font-size: 18px;
+            color: var(--spark-dark-gray);
+            font-weight: bold;
+        }
+
+        /* Section Headers */
+        .section-header-custom {
+            background: var(--spark-dark-gray);
+            color: #fff;
+            padding: 1.25rem 2rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            border-bottom: 3px solid var(--spark-cyan);
+            margin: -2rem -2rem 2rem -2rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-divider {
+            background: var(--spark-dark-gray);
+            color: #fff;
+            padding: 1.25rem 2rem;
+            text-align: center;
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin: -40px -40px 40px -40px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 3px solid var(--spark-cyan);
+        }
+
+        /* Custom Card Styles */
+        .summary-card-custom {
+            background: #fff;
+            border: 2px solid #f0f0f0;
+            transition: all 0.3s ease;
+            height: 100%;
+            border-radius: 8px;
+        }
+
+        .summary-card-custom:hover {
+            border-color: var(--spark-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+
+        .summary-card-custom .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #000;
+            margin: 0.5rem 0;
+        }
+
+        /* Score Cell Styles - Based on numerical ranges */
+        .score-cell {
+            text-align: center;
+            font-weight: bold;
+            border-radius: 4px;
+            padding: 0.375rem 0.75rem;
+            display: flexbox;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score-cell-critical { background: var(--score-critical); color: #000; }
+        .score-cell-low { background: var(--score-low); color: #000; }
+        .score-cell-medium-low { background: var(--score-medium-low); color: #000; }
+        .score-cell-medium { background: var(--score-medium); color: #000; }
+        .score-cell-medium-high { background: var(--score-medium-high); color: #000; }
+        .score-cell-high { background: var(--score-high); color: #000; }
+
+        /* Highlight Section */
+        .highlight-section-custom {
+            background: #f5f5f5;
+            border-left: 5px solid var(--spark-cyan);
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Overall Score Card */
+        .overall-score-card {
+            background: var(--spark-cyan);
+            max-width: 350px;
+        }
+
+        .overall-score-card .value {
+            font-size: 2.5rem;
+            background: linear-gradient(45deg, #000, var(--spark-dark-gray));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Centered content for Executive Summary */
+        .executive-summary-centered {
+            text-align: center;
+            max-width: 80%;
+            margin: 0 auto 3rem auto;
+        }
+
+        .executive-summary-left {
+            text-align: left;
+        }
+
+        /* STEPPED ELEVATION SCALE */
+        .maturity-scale {
+            margin-bottom: 40px;
+            margin-top: 30px;
+        }
+
+        .scale-title {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .scale-description {
+            font-size: 14px;
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 30px;
+            text-align: left;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .scale-container {
+            background: white;
+            padding: 40px 20px 60px 20px;
+            position: relative;
+            overflow: visible;
+            perspective: 1000px;
+        }
+
+        .stepped-scale {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 40px;
+            padding: 0 20px;
+        }
+
+        .step {
+            flex: 1;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            cursor: pointer;
+            min-width: 0;
+            max-width: none;
+        }
+
+        .step-block {
+            position: relative;
+            background: white;
+            border-radius: 12px 12px 0 0;
+            padding: 20px 10px;
+            text-align: center;
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.1),
+                0 20px 40px rgba(0, 0, 0, 0.05);
+            transform: translateZ(20px);
+            transition: all 0.4s ease;
+        }
+
+        /* Different heights for steps */
+        .step:nth-child(1) .step-block { height: 180px; }
+        .step:nth-child(2) .step-block { height: 220px; }
+        .step:nth-child(3) .step-block { height: 260px; }
+        .step:nth-child(4) .step-block { height: 300px; }
+        .step:nth-child(5) .step-block { height: 340px; }
+
+        .step:hover {
+            transform: translateY(-15px) scale(1.05);
+            z-index: 10;
+        }
+
+        .step:hover .step-block {
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.15),
+                0 30px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Updated step colors with SPARK palette */
+        .step.nascent .step-block { 
+            background: linear-gradient(135deg, #ffffff 0%, var(--score-critical) 100%);
+            border-top: 4px solid var(--spark-cyan);
+        }
+        .step.emerging .step-block { 
+            background: linear-gradient(135deg, #ffffff 0%, var(--score-low) 100%);
+            border-top: 4px solid var(--spark-cyan);
+        }
+        .step.developing .step-block { 
+            background: linear-gradient(135deg, #ffffff 0%, var(--score-medium) 100%);
+            border-top: 4px solid var(--spark-cyan);
+        }
+        .step.advanced .step-block { 
+            background: linear-gradient(135deg, #ffffff 0%, var(--score-medium-high) 100%);
+            border-top: 4px solid var(--spark-cyan);
+        }
+        .step.leading .step-block { 
+            background: linear-gradient(135deg, #ffffff 0%, var(--score-high) 100%);
+            border-top: 4px solid var(--spark-cyan);
+        }
+
+        .step-score {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            opacity: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step:hover .step-score {
+            opacity: 1;
+            top: -50px;
+        }
+
+        .step-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .step.nascent .step-title { color: var(--spark-dark-gray); }
+        .step.emerging .step-title { color: var(--spark-dark-gray); }
+        .step.developing .step-title { color: var(--spark-dark-gray); }
+        .step.advanced .step-title { color: var(--spark-dark-gray); }
+        .step.leading .step-title { color: var(--spark-dark-gray); }
+
+        .step-descriptors {
+            font-size: 12px;
+            line-height: 1.5;
+            color: #666;
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            right: 10px;
+        }
+
+        /* Pillars section */
+        .pillars-section {
+            margin-bottom: 30px;
+            padding: 30px;
+            position: relative;
+            max-width: 100%;
+        }
+
+        .pillars-title {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 8px;
+            font-weight: 600;
+            text-align: center;
+        }
+
+        .pillars-subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+            font-weight: 300;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            justify-items: center;
+        }
+
+        .pillar-card {
+            background: transparent;
+            border: none;
+            border-radius: 0;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 450px;
+        }
+
+        .pillar-letter-circle {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            background: white;
+            border: 3px solid var(--spark-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .pillar-card:hover .pillar-letter-circle {
+            background: var(--spark-cyan);
+            transform: scale(1.1);
+            box-shadow: 0 8px 24px rgba(173, 251, 246, 0.25);
+        }
+
+        .pillar-letter {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--spark-dark-gray);
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover .pillar-letter {
+            color: var(--spark-dark-gray);
+        }
+
+        .pillar-name {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .pillar-description {
+            margin-top: 15px;
+        }
+
+        .pillar-description ul {
+            margin: 0;
+            padding-left: 0;
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+            list-style: none;
+        }
+
+        /* PDF Save Button */
+        .pdf-button {
+            background: var(--spark-dark-gray);
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-description li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 16px;
+        }
+
+        /* Business unit table */
+        .business-unit-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 30px 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid #f0f0f0;
+            font-size: 14px;
+        }
+
+        .business-unit-table th {
+            background: var(--spark-gray);
+            color: #000;
+            padding: 20px 15px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 3px solid var(--spark-cyan);
+        }
+
+        .business-unit-table td {
+            padding: 20px 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
+            width: 16.67%;
+        }
+
+        .business-unit-table .unit-name {
+            text-align: left !important;
+            font-weight: bold;
+            color: #000;
+            font-size: 16px;
+        }
+
+        /* Assessment overview box */
+        .assessment-overview {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid var(--spark-cyan);
+            margin-bottom: 30px;
+        }
+
+        .assessment-overview h3 {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .assessment-points {
+            font-size: 13px;
+            color: #555;
+        }
+
+        .assessment-points li {
+            margin-bottom: 5px;
+            list-style-position: inside;
+        }
+
+        /* Report sections table */
+        .sections-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            position: relative;
+        }
+
+        .sections-table th {
+            text-align: left;
+            padding: 8px 10px;
+            background: #e9ecef;
+            font-weight: 600;
+            color: #333;
+            border-bottom: 2px solid var(--spark-cyan);
+            font-size: 12px;
+        }
+
+        .sections-table td {
+            padding: 8px 10px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: center;
+        }
+
+        .sections-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .section-name {
+            font-weight: 600;
+            color: var(--spark-dark-gray);
+            font-size: 12px;
+        }
+
+        .section-icon {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            margin-right: 6px;
+            vertical-align: middle;
+            opacity: 0.7;
+        }
+
+        .page-ref {
+            color: #666;
+            font-size: 11px;
+        }
+
+        /* Analysis Sections */
+        .analysis-section {
+            background: #fff;
+            border: 2px solid #f0f0f0;
+            border-radius: 8px;
+            padding: 30px;
+            margin: 30px 0;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .analysis-section:hover {
+            border-color: var(--spark-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        
+        .analysis-section h3 {
+            color: #000;
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+        
+        .analysis-section h4 {
+            color: var(--spark-dark-gray);
+            font-size: 18px;
+            margin: 20px 0 10px 0;
+            font-weight: 600;
+        }
+        
+        .analysis-section ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+        
+        .analysis-section li {
+            margin: 8px 0;
+        }
+
+        /* Special styling for highlighted sections */
+        .analysis-section[style*="background: #fff; border: 2px solid #ADFBF6"] {
+            border-color: var(--spark-cyan) !important;
+            background: var(--spark-light-cyan) !important;
+        }
+
+        .analysis-section[style*="background: #f0fdfc"] {
+            border-color: var(--spark-cyan) !important;
+            background: var(--spark-light-cyan) !important;
+        }
+
+        .analysis-section[style*="background: #e0fffe"] {
+            background: #f5f5f5 !important;
+            border-left: 5px solid var(--spark-cyan) !important;
+            border-radius: 0 8px 8px 0 !important;
+        }
+
+        .analysis-section[style*="background: #fff; border: 2px solid #999999"] {
+            border-color: var(--spark-gray) !important;
+        }
+        
+        .risk-indicator {
+            background: #f0fdfc;
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            border: 2px solid var(--spark-gray);
+            font-size: 0.9rem;
+        }
+        
+        .strength-indicator {
+            background: var(--spark-cyan);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .score-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .score-card {
+            background: #fff;
+            border: 2px solid #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .score-card:hover {
+            border-color: var(--spark-cyan);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+        }
+        
+        .score-card h3 {
+            font-size: 28px;
+            margin: 0;
+            color: #000;
+            font-weight: bold;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        
+        .score-card p {
+            margin: 10px 0 0 0;
+            font-weight: 600;
+            color: var(--spark-dark-gray);
+        }
+
+        /* Score card color variants - Based on numerical ranges */
+        .score-card.critical { background: var(--score-critical); }
+        .score-card.low { background: var(--score-low); }
+        .score-card.medium-low { background: var(--score-medium-low); }
+        .score-card.medium { background: var(--score-medium); }
+        .score-card.medium-high { background: var(--score-medium-high); }
+        .score-card.high { background: var(--score-high); }
+
+        .content {
+            max-width: 100%;
+        }
+        
+        .intro-section {
+            margin-bottom: 40px;
+        }
+        
+        .intro-section h2 {
+            color: #000;
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        
+        .intro-text {
+            font-size: 18px;
+            color: #555;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        /* Success metrics section styling */
+        div[style*="background: #14b8a6"] {
+            background: var(--spark-dark-gray) !important;
+            color: #fff;
+            padding: 25px;
+            border-radius: 8px;
+            border: 2px solid var(--spark-cyan);
+        }
+
+        div[style*="background: #14b8a6"] h3,
+        div[style*="background: #14b8a6"] h4 {
+            color: #fff !important;
+        }
+
+        div[style*="background: #14b8a6"] ul li {
+            color: #fff;
+        }
+
+        /* Page break styling for clear divisions */
+        .page-break {
+            page-break-before: always;
+            border-top: 3px solid var(--spark-cyan);
+            margin-top: 0;
+            padding-top: 2rem;
+        }
+
+        .page-break:first-child {
+            border-top: none;
+            page-break-before: auto;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+        }
+        
+        .nav-btn {
+            background: var(--spark-dark-gray);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            font-size: 14px;
+        }
+        
+        .nav-btn:hover {
+            background: #000;
+            transform: translateY(-1px);
+        }
+        
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .sidebar-wrapper {
+                width: 250px;
+            }
+            
+            .main-content-wrapper {
+                margin-left: 0;
+            }
+            
+            .sidebar-toggle {
+                display: flex !important;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+
+            .pillar-letter-circle {
+                width: 60px;
+                height: 60px;
+            }
+
+            .pillar-letter {
+                font-size: 28px;
+            }
+
+            .stepped-scale {
+                transform: none;
+            }
+
+            .section {
+                padding: 1rem;
+            }
+
+            .page {
+                padding: 20px;
+            }
+
+            .section-header-custom {
+                margin: -1rem -1rem 2rem -1rem;
+            }
+
+            .section-divider {
+                margin: -20px -20px 20px -20px;
+                font-size: 1rem;
+                padding: 1rem;
+            }
+
+            .score-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .sidebar-toggle {
+                display: flex !important;
+            }
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar-wrapper,
+            .sidebar-toggle,
+            .nav-buttons {
+                display: none !important;
+            }
+            
+            .main-content-wrapper {
+                margin-left: 0 !important;
+            }
+            
+            .section,
+            .page {
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+        <!-- Login Form -->
+        <div class="login-form" id="loginForm">
+        <img
+            src="https://i.imgur.com/ZACrZu4.png"
+            alt="Grey AI Logo"
+            width="150"
+            height="50"
+            style="max-width: 100%; height: auto; margin-bottom: 2rem;"/>
+
+        <h2>Login</h2>
+        <form id="login" onsubmit="login(event)">
+            <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" required>
+            </div>
+            <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+            </div>
+            <div id="errorMessage" class="error">Invalid username or password</div>
+            <button type="submit">Login</button>
+        </form>
+        </div>
+
+
+
+    <!-- Welcome Page (hidden initially) -->
+    <div class="welcome-page hidden" id="welcomePage">
+            <!-- Header -->
+        <header class="header-custom sticky-top py-3 px-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
+                    <div class="text-muted small">IMB Partners • Comprehensive Analysis • July 2025</div>
+                </div>
+
+                <!-- <button class="pdf-button no-print" onclick="generatePDF()" id="pdfButton">
+                    <i class="bi bi-file-earmark-pdf"></i> Save as PDF
+                </button> -->
+
+                <button class="logout-btn" onclick="logout()">
+                    <i class="bi bi-box-arrow-right"></i> Logout
+                </button>
+
+            </div>
+        </header>
+
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+            <i class="bi bi-list" style="font-size: 1.5rem;"></i>
+        </button>
+
+        <!-- Sidebar -->
+        <div class="sidebar-wrapper" id="sidebarWrapper">
+            <nav class="sidebar-custom">
+                <h4 class="mb-3 mt-4">Contents</h4>
+                <a class="toc-item active" href="#about-report" data-section="about-report">About Your Report</a>
+                <a class="toc-item" href="#methodology" data-section="methodology">Assessment Methodology</a>
+                <a class="toc-item" href="#executive-summary" data-section="executive-summary">Executive Summary</a>
+                <a class="toc-item" href="#Division" data-section="Division">Division Analysis Overview</a>
+                <a class="toc-item" href="#Finance" data-section="Finance">Finance & Accounting</a>
+                <a class="toc-item" href="#Investments" data-section="Investments">Investments</a>
+                <a class="toc-item" href="#BusinessDevelopment" data-section="BusinessDevelopment">Business Development</a>
+                <a class="toc-item" href="#CEOOperations" data-section="CEOOperations">CEO & Operations Group</a>
+                <a class="toc-item" href="#quick-wins" data-section="quick-wins">Quick Wins</a>
+                <a class="toc-item" href="#evidence" data-section="evidence">Evidence & Documentation</a>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content-wrapper" id="mainContent">
+            <main class="container-fluid px-4 py-4">
+                
+                <!-- Page 1: About Your Report -->
+                <section id="about-report" class="section">
+                    <div class="section-header-custom">About Your Report</div>
+                    
+                    <p class="mb-4">
+                        Your GREY Score™ Interpretive Report provides a comprehensive analysis of your organization's AI maturity. Through our proprietary assessment methodology, we deliver actionable insights that enable you to benchmark your current state, identify critical gaps, and chart a strategic path toward AI excellence.
+                    </p>
+
+                    <div class="assessment-overview">
+                        <h3>How Your Report is Organized</h3>
+                        <p class="mb-3">Your comprehensive assessment includes ten key sections:</p>
+                        <table class="sections-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 35%">Section</th>
+                                    <th style="width: 55%">What You Receive</th>
+                                    <th style="width: 10%; text-align: right;">Page</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        </svg>
+                                        About Your Report
+                                    </td>
+                                    <td>Understanding your GREY Score™ assessment results</td>
+                                    <td class="page-ref" style="text-align: right;">1</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                            <path d="M3 9h18"/>
+                                            <path d="M9 21V9"/>
+                                        </svg>
+                                        Assessment Methodology
+                                    </td>
+                                    <td>The GREY Score™ framework and evaluation approach</td>
+                                    <td class="page-ref" style="text-align: right;">2</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <rect x="3" y="3" width="6" height="6" fill="#434343" opacity="0.2"/>
+                                            <rect x="11" y="3" width="6" height="6" fill="#434343" opacity="0.4"/>
+                                            <rect x="19" y="3" width="2" height="6" fill="#434343" opacity="0.6"/>
+                                            <rect x="3" y="11" width="6" height="6" fill="#434343" opacity="0.6"/>
+                                            <rect x="11" y="11" width="6" height="6" fill="#434343" opacity="0.8"/>
+                                            <rect x="19" y="11" width="2" height="6" fill="#434343" opacity="0.4"/>
+                                            <rect x="3" y="19" width="6" height="2" fill="#434343" opacity="0.3"/>
+                                            <rect x="11" y="19" width="6" height="2" fill="#434343" opacity="0.5"/>
+                                            <rect x="19" y="19" width="2" height="2" fill="#434343" opacity="0.7"/>
+                                        </svg>
+                                        Executive Summary & Scores
+                                    </td>
+                                    <td>Key findings and performance metrics across all dimensions</td>
+                                    <td class="page-ref" style="text-align: right;">3</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                        </svg>
+                                        Division Analysis Overview
+                                    </td>
+                                    <td>Cross-divisional performance comparison and insights</td>
+                                    <td class="page-ref" style="text-align: right;">4</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                        </svg>
+                                        Finance & Accounting Analysis
+                                    </td>
+                                    <td>Financial operations AI readiness assessment</td>
+                                    <td class="page-ref" style="text-align: right;">5</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                        </svg>
+                                        Investments Analysis
+                                    </td>
+                                    <td>Investment operations AI maturity evaluation</td>
+                                    <td class="page-ref" style="text-align: right;">6</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        </svg>
+                                        Business Development Analysis
+                                    </td>
+                                    <td>Growth strategy AI capabilities assessment</td>
+                                    <td class="page-ref" style="text-align: right;">7</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <path d="M16 12h-6"/>
+                                            <path d="M12 16V8"/>
+                                        </svg>
+                                        CEO & Operations Group Analysis
+                                    </td>
+                                    <td>Executive leadership and operations AI readiness</td>
+                                    <td class="page-ref" style="text-align: right;">8</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="#434343" opacity="0.2"/>
+                                        </svg>
+                                        Quick-Win Initiatives
+                                    </td>
+                                    <td>High-impact, rapid implementation opportunities</td>
+                                    <td class="page-ref" style="text-align: right;">9</td>
+                                </tr>
+                                <tr>
+                                    <td class="section-name">
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                                            <polyline points="14 2 14 8 20 8"/>
+                                        </svg>
+                                        Evidence & Documentation
+                                    </td>
+                                    <td>Supporting data and key findings documentation</td>
+                                    <td class="page-ref" style="text-align: right;">10</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="maturity-scale">
+                        <h3 class="scale-title">Understanding Your AI Maturity Score</h3>
+                        <p class="scale-description">Your organization receives an overall GREY Score™ between 1-100, complemented by four individual pillar scores. This composite scoring system enables precise identification of strengths and opportunities across your AI landscape. Organizations progress through five distinct maturity stages, each representing a significant evolution in AI capability and value creation.</p>
+                        
+                        <div class="scale-container">
+                            <div class="stepped-scale">
+                                <div class="step nascent">
+                                    <div class="step-score">1-20</div>
+                                    <div class="step-block">
+                                        <div class="step-title">Nascent</div>
+                                        <div class="step-descriptors">Foundational<br>Exploring<br>Initial</div>
+                                    </div>
+                                </div>
+                                <div class="step emerging">
+                                    <div class="step-score">21-40</div>
+                                    <div class="step-block">
+                                        <div class="step-title">Emerging</div>
+                                        <div class="step-descriptors">Experimental<br>Learning<br>Growing</div>
+                                    </div>
+                                </div>
+                                <div class="step developing">
+                                    <div class="step-score">41-60</div>
+                                    <div class="step-block">
+                                        <div class="step-title">Developing</div>
+                                        <div class="step-descriptors">Implementing<br>Scaling<br>Structured</div>
+                                    </div>
+                                </div>
+                                <div class="step advanced">
+                                    <div class="step-score">61-80</div>
+                                    <div class="step-block">
+                                        <div class="step-title">Advanced</div>
+                                        <div class="step-descriptors">Optimized<br>Strategic<br>Mature</div>
+                                    </div>
+                                </div>
+                                <div class="step leading">
+                                    <div class="step-score">81-100</div>
+                                    <div class="step-block">
+                                        <div class="step-title">Leading</div>
+                                        <div class="step-descriptors">Innovative<br>Transformative<br>Pioneering</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 2: Assessment Methodology -->
+                <section id="methodology" class="section page-break">
+                    <div class="section-header-custom">The GREY Score™ Assessment Methodology</div>
+                    
+                    <div class="assessment-overview">
+                        <h3>Our Proprietary Assessment Framework</h3>
+                        <p class="mb-3">Our proprietary assessment evaluates your organization across four critical pillars of AI maturity. Each pillar is rigorously analyzed through evidence-based criteria, generating individual scores that aggregate into your comprehensive GREY Score™.</p>
+                        
+                        <ul class="assessment-points">
+                            <li><strong>Comprehensive evaluation:</strong> 27 issue categories including consolidated AI literacy assessment</li>
+                            <li><strong>Actionable roadmap:</strong> Prioritized initiatives with clear ROI projections</li>
+                        </ul>
+                    </div>
+
+                    <div class="pillars-section">
+                        <h3 class="pillars-title">The Four Pillars of AI Maturity</h3>
+                        <p class="pillars-subtitle">Each pillar represents a critical dimension of AI excellence. Your individual pillar scores illuminate specific strengths and improvement areas, enabling targeted intervention strategies.</p>
+                        <div class="pillars-grid">
+                            <div class="pillar-card">
+                                <div class="pillar-letter-circle">
+                                    <div class="pillar-letter">G</div>
+                                </div>
+                                <div class="pillar-name">GOVERNANCE</div>
+                                <div class="pillar-description">
+                                    <ul>
+                                        <li>Clear rules for responsible AI oversight</li>
+                                        <li>Conformance with industry best practices</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="pillar-card">
+                                <div class="pillar-letter-circle">
+                                    <div class="pillar-letter">R</div>
+                                </div>
+                                <div class="pillar-name">READINESS</div>
+                                <div class="pillar-description">
+                                    <ul>
+                                        <li>Leadership preparedness and employee AI literacy</li>
+                                        <li>Data infrastructure and hiring optimization</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="pillar-card">
+                                <div class="pillar-letter-circle">
+                                    <div class="pillar-letter">E</div>
+                                </div>
+                                <div class="pillar-name">EXECUTION</div>
+                                <div class="pillar-description">
+                                    <ul>
+                                        <li>AI-first culture and workflow integration</li>
+                                        <li>Systems and business unit interoperability</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="pillar-card">
+                                <div class="pillar-letter-circle">
+                                    <div class="pillar-letter">Y</div>
+                                </div>
+                                <div class="pillar-name">YIELD POTENTIAL</div>
+                                <div class="pillar-description">
+                                    <ul>
+                                        <li>Resource allocation for critical gaps</li>
+                                        <li>Performance improvement and cost reduction</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 3: Executive Summary & Scores -->
+                <section id="executive-summary" class="section page-break">
+                    <div class="section-header-custom">Executive Summary & Scores</div>
+                    
+                    <!-- Centered Content Above Top-Line Implications -->
+                    <div class="executive-summary-centered">
+                        <!-- Overall Score -->
+                        <div class="row justify-content-center mb-4">
+                            <div class="col-auto">
+                                <div class="card summary-card-custom overall-score-card text-center p-4">
+                                    <h2 class="h6 text-uppercase fw-bold mb-2" style="letter-spacing: 2px;">Overall GREY Score</h2>
+                                    <div class="value">57</div>
+                                    <div class="mt-2">
+                                        <span class="badge" style="background: var(--spark-dark-gray); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; text-transform: uppercase;">Developing</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="highlight-section-custom mb-4 text-center">
+                            <p style="font-size: 16px; line-height: 1.6; margin: 0;">
+                                While your AI maturity is Developing, your yield potential score highlights the immense opportunity for growth and exponential wins ahead.	Your readiness score shows your workforce is eager to engage with AI.	By understanding what's behind your lower scores within Governance and Execution, you can strategically deploy resources to meet business goals and achieve core competencies.
+                            </p>
+                        </div>
+
+                        <!-- Performance by Pillar -->
+                        <h3 class="mb-4" style="color: var(--spark-dark-gray);">Performance by Pillar</h3>
+                        
+                        <div class="row g-3 mb-5">
+                            <div class="col-md-3">
+                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium-low);">
+                                    <h4 class="h6 text-uppercase fw-bold">Governance</h4>
+                                    <div class="value fs-1">55</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium);">
+                                    <h4 class="h6 text-uppercase fw-bold">Readiness</h4>
+                                    <div class="value fs-1">56</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium-low);">
+                                    <h4 class="h6 text-uppercase fw-bold">Execution</h4>
+                                    <div class="value fs-1">55</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium);">
+                                    <h4 class="h6 text-uppercase fw-bold">Yield Potential</h4>
+                                    <div class="value fs-1">59</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Left-aligned content from Top-Line Implications -->
+                    <div class="executive-summary-left">
+                        <div class="highlight-section-custom mb-4">
+                            <h3 style="color: var(--spark-dark-gray); margin-bottom: 20px;">Top-Line Implications</h3>
+                            
+                            <p style="margin-bottom: 15px;">
+                                <strong>Showcase Strength.</strong> High, company-wide AI literacy lets teams spot value opportunities early, speak a shared data-driven language, and champion impactful improvements. This collective fluency accelerates the removal of manual drudgery, speeds funding for promising ideas, and channels each win into the next wave of AI work.
+                            </p>
+                            
+                            <p style="margin-bottom: 15px;">
+                                <strong>Headline Risk.</strong> Headline Risk. Lowest scores cluster in Governance and Execution, signalling potential Governance and Execution that could delay high-visibility AI work.
+                            </p>
+                            
+                            <p style="margin-bottom: 15px;">
+                                <strong>Strategic Enabler.</strong> The Marketing & Public Relations team exhibits your highest AI literacy score 64. With some additional training, positioning it as an internal "AI Center of Excellence (COE)" can help bring everyone up to a core competency and accelerate your growth significantly. Your Business Development team exhibits the most postive attitudes and initiatives about the possibilities of AI. Providing them with targeted support will allow you to ensure their impact and capabilities match their enthusiasm. 
+                            </p>
+
+                            
+                            <p style="margin-bottom: 20px;">
+                                <strong>Game-Changing Play.</strong> Leveraging your solid Yield capability, a meaningfully AI literate Center of Excellence within the Marketing & Public Relations team and the Business Development team's bullish attitude about AI, a focused 60-day sprint can raise the overall GREY Score by 10–15 points, accelerating your path toward the Advanced tier. The information sharing culture prevelant on the Marketing & Public Relations team positions members of this team to be AI Champions, whose enthusiasm will be integral to your change management process. 
+                            </p>
+                        </div>
+
+                            <div class="analysis-section" style="background: #fff; border: 2px solid #ADFBF6;">
+                            <h3>High-ROI Sprint Strategy: Champion-Led Transformation <span style="font-size: 14px; color: #8b2c2c;">For Review (Details not yet changed) 3f9f8d7c-6e5b-4a3a-2b1c-0d9e8f7g6h5i</span></h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                                <div>
+                                    <h4>30-Day Sprint: Crisis Response</h4>
+                                    <ul style="color: #555; line-height: 1.6; font-size: 13px;">
+                                        <li>Deploy Business Development as AI mentor team</li>
+                                        <li>Emergency intervention for CEO & Operations execution crisis</li>
+                                        <li>Address Finance sharing culture breakdown</li>
+                                        <li>Launch 2-3 high-impact use cases led by champions</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4>60-Day Sprint: Champion Mentoring</h4>
+                                    <ul style="color: #555; line-height: 1.6; font-size: 13px;">
+                                        <li>Business Development mentors Finance & Operations teams</li>
+                                        <li>Share successful execution methodologies</li>
+                                        <li>Build cross-team collaboration processes</li>
+                                        <li>Establish AI literacy training led by champions</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4>90-Day Sprint: Scaled Excellence</h4>
+                                    <ul style="color: #555; line-height: 1.6; font-size: 13px;">
+                                        <li>All teams reach minimum 50+ execution scores</li>
+                                        <li>Champion-led Center of Excellence operational</li>
+                                        <li>Demonstrate measurable ROI across all divisions</li>
+                                        <li>Self-sustaining AI-first culture established</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px; padding: 15px; background: #e0fffe; border-radius: 8px;">
+                                <strong>Champion Strategy:</strong> Business Development's 67 AI Literacy score makes them ideal mentors. Their balanced excellence across all pillars (51-80 scores) provides a proven playbook for other teams to follow.
+                            </div>
+                        </div>
+                        
+
+                        <!-- Success Metrics -->
+                        <div style="background: var(--spark-dark-gray); color: #fff; padding: 25px; border-radius: 8px; border: 2px solid var(--spark-cyan);">
+                            <h3 style="color: #fff; margin-bottom: 15px;">📈 Success Metrics & ROI Targets <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) e8f7g6h5-i4j3-k2l1-m0n9-o8p7q6r5s4t3</span></h3>
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                                <div>
+                                    <h4 style="color: #fff;">Governance Leadership Metrics</h4>
+                                    <ul style="color: #fff; line-height: 1.8;">
+                                        <li><strong>Governance Score:</strong> Improve from 39 to 55+ using risk management expertise</li>
+                                        <li><strong>AI Policy Framework:</strong> Establish enterprise AI governance committee leadership</li>
+                                        <li><strong>Vendor Evaluation:</strong> Create comprehensive AI vendor assessment criteria</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <h4 style="color: #fff;">Business Value Metrics</h4>
+                                    <ul style="color: #fff; line-height: 1.8;">
+                                        <li><strong>Execution Score:</strong> Improve from 43 to 55+ through Business Development partnership</li>
+                                        <li><strong>AI Implementation:</strong> Deploy 3+ investment-specific AI analysis tools</li>
+                                        <li><strong>Readiness Mentoring:</strong> Share change management expertise with other divisions</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+                </section>
+                
+                <!-- Page 6: Division Analysis -->
+                <section id="Division" class="section page-break">
+                    <div class="section-header-custom">Division Analysis Overview</div>
+                    
+                    <div class="content">
+
+                        <table class="business-unit-table" style="font-size: 14px;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Division</th>
+                                    <th>Governance</th>
+                                    <th>Readiness</th>
+                                    <th>Execution</th>
+                                    <th>Yield</th>
+                                    <th style="background: var(--spark-dark-gray); color: white;">GREY Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="unit-name">Finance & Accounting</td>
+                                    <td class="score-cell score-cell-medium-low">52</td>
+                                    <td class="score-cell score-cell-medium-low">51</td>
+                                    <td class="score-cell score-cell-medium">57</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">Investments</td>
+                                    <td class="score-cell score-cell-medium-low">52</td>
+                                    <td class="score-cell score-cell-medium">57</td>
+                                    <td class="score-cell score-cell-medium-low">55</td>
+                                    <td class="score-cell score-cell-medium">57</td>
+                                    <td class="score-cell score-cell-medium">57</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">Business Development</td>
+                                    <td class="score-cell score-cell-medium">61</td>
+                                    <td class="score-cell score-cell-medium">61</td>
+                                    <td class="score-cell score-cell-medium">65</td>
+                                    <td class="score-cell score-cell-medium">64</td>
+                                    <td class="score-cell score-cell-medium">63</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">CEO & Operations Group</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                    <td class="score-cell score-cell-medium-low">55</td>
+                                    <td class="score-cell score-cell-low">43</td>
+                                    <td class="score-cell score-cell-medium">59</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table class="business-unit-table" style="font-size: 14px; margin-top: 20px;">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: left;">Division</th>
+                                    <th>AI Literacy</th>
+                                    <th>Sharing Team Culture</th>
+                                    <th>Attitude & Initiative</th>
+                                    <th>Company Processes & Resources</th>
+                                    <th style="background: var(--spark-dark-gray); color: white;">Average</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="unit-name">Finance & Accounting</td>
+                                    <td class="score-cell score-cell-medium-low">49</td>
+                                    <td class="score-cell score-cell-low">33</td>
+                                    <td class="score-cell score-cell-medium">63</td>
+                                    <td class="score-cell score-cell-low">33</td>
+                                    <td class="score-cell score-cell-low">45</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">Investments</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                    <td class="score-cell score-cell-medium-high">66</td>
+                                    <td class="score-cell score-cell-medium">56</td>
+                                    <td class="score-cell score-cell-low">43</td>
+                                    <td class="score-cell score-cell-medium-low">55</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">Business Development</td>
+                                    <td class="score-cell score-cell-medium">61</td>
+                                    <td class="score-cell score-cell-high">80</td>
+                                    <td class="score-cell score-cell-medium-high">68</td>
+                                    <td class="score-cell score-cell-low">45</td>
+                                    <td class="score-cell score-cell-medium-low">54</td>
+                                </tr>
+                                <tr>
+                                    <td class="unit-name">CEO & Operations Group</td>
+                                    <td class="score-cell score-cell-medium">57</td>
+                                    <td class="score-cell score-cell-medium">62</td>
+                                    <td class="score-cell score-cell-medium">58</td>
+                                    <td class="score-cell score-cell-low">36</td>
+                                    <td class="score-cell score-cell-medium-low">46</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="analysis-section">
+                            <h3>Key Findings Summary <span style="font-size: 14px; color: #8b2c2c;">For Review (Details not yet changed) b2c3d4e5-f6a7-8901-2345-67890abc1234</span></h3> 
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Clear AI Champion:</strong> <span class="strength-indicator">Business Development (GREY 63)</span> - leads in all core pillars and should mentor other teams</li>
+                                <li><strong>Highest AI Literacy:</strong> <span class="strength-indicator">Business Development (61)</span> - these individuals are your AI evangelists and internal experts</li>
+                                <li><strong>Critical Execution Crisis:</strong> <span class="risk-indicator">CEO & Operations Group (43)</span> - immediate intervention required to prevent AI initiative failure</li>
+                                <li><strong>Sharing Culture Gap:</strong> <span class="risk-indicator">Finance & Accounting (33)</span> - severe collaboration barrier threatening knowledge transfer</li>
+                                <li><strong>ROI Strategy:</strong> Leverage Business Development's expertise to rapidly mentor struggling teams while addressing critical execution gaps in operations</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 7: Finance & Accounting Analysis -->
+                <section id="Finance" class="section page-break">
+                    <div class="section-header-custom">Finance & Accounting</div>
+                                    
+                    <div class="content">
+                        <!-- Score Dashboard -->
+                        <div class="score-grid">
+                            <div class="score-card medium">
+                                <h3>61</h3>
+                                <p>Governance</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>45</h3>
+                                <p>Readiness</p>
+                            </div>
+                            <div class="score-card medium-low">
+                                <h3>47</h3>
+                                <p>Execution</p>
+                            </div>
+                            <div class="score-card medium-high">
+                                <h3>72</h3>
+                                <p>Yield Potential</p>
+                            </div>
+                        </div>
+
+                        <div class="score-grid" style="margin-top: 20px;">
+                            <div class="score-card medium-low">
+                                <h3>49</h3>
+                                <p>AI Literacy</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>33</h3>
+                                <p>Sharing Culture</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>63</h3>
+                                <p>Attitude & Initiative</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>33</h3>
+                                <p>Company Processes</p>
+                            </div>
+                        </div>
+
+                        <!-- Executive Summary -->
+                        <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
+                            <h3>📊 Executive Summary <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 5a6b7c8d-9e0f-1a2b-3c4d-5e6f7a8b9c0d</span></h3>
+                            <ul style="color: #000; line-height: 1.8; font-size: 16px;">
+                                <li><strong>ROI Recognition Leader:</strong> Finance & Accounting achieves highest Yield score (72), demonstrating clear understanding of AI's business value potential</li>
+                                <li><strong>Critical Collaboration Crisis:</strong> Sharing Culture breakdown (33) threatens enterprise AI adoption and requires immediate intervention</li>
+                                <li><strong>Governance Opportunity:</strong> Natural risk management skills position team to lead enterprise AI compliance and oversight</li>
+                            </ul>
+                        </div>
+
+                        <!-- Core Strengths -->
+                        <div class="analysis-section">
+                            <h3>Core Strengths & Competitive Advantages <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) f1e2d3c4-b5a6-7890-1234-56789abcdef0</h3>
+                            
+                            <h4>Business Value Excellence</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Yield Recognition (72):</strong> Strong understanding of AI ROI potential - natural alignment with measuring business impact</li>
+                                <li><strong>Strategic Mindset (63):</strong> Positive attitude toward AI adoption with solid initiative for self-directed learning</li>
+                            </ul>
+
+                            <h4>Foundation Capabilities</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>AI Literacy Base (49):</strong> Solid technical understanding provides foundation for advanced implementation</li>
+                                <li><strong>Execution Potential (47):</strong> Moderate implementation capability with room for rapid improvement through mentoring</li>
+                            </ul>
+
+                            <h4>Governance Leadership Potential</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Risk Management Expertise:</strong> Natural alignment with AI governance, compliance, and oversight responsibilities</li>
+                                <li><strong>Investment Justification Skills:</strong> Ability to build compelling AI business cases and measure ROI</li>
+                            </ul>
+                        </div>
+
+                        <!-- Critical Issues -->
+                        <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
+                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 9d8e7f6g-5h4i-3j2k-1l0m-n9o8p7q6r5s4</h3>
+                            
+                            <h4>Collaboration Crisis (Score: 33)</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Knowledge Silos:</strong> Severe breakdown in sharing culture threatens all AI initiatives and learning</li>
+                                <li><strong>Isolation Risk:</strong> Teams not collaborating on AI experiments, leading to repeated mistakes and missed opportunities</li>
+                            </ul>
+
+                            <h4>Infrastructure & Governance Gaps</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Company Processes (33):</strong> Limited access to AI tools and formal training programs</li>
+                                <li><strong>Governance Framework (45):</strong> Weak AI policy structure despite natural risk management capabilities</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 8: Investments Analysis -->
+                <section id="Investments" class="section page-break">
+                    <div class="section-header-custom">Investments</div>
+
+                    <div class="content">
+                        <div class="score-grid">
+                            <div class="score-card medium-low">
+                                <h3>52</h3>
+                                <p>Governance</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>57</h3>
+                                <p>Readiness</p>
+                            </div>
+                            <div class="score-card medium-low">
+                                <h3>55</h3>
+                                <p>Execution</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>57</h3>
+                                <p>Yield Potential</p>
+                            </div>
+                        </div>
+
+                        <div class="score-grid" style="margin-top: 20px;">
+                            <div class="score-card medium-low">
+                                <h3>54</h3>
+                                <p>AI Literacy</p>
+                            </div>
+                            <div class="score-card medium-high">
+                                <h3>66</h3>
+                                <p>Sharing Culture</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>56</h3>
+                                <p>Attitude & Initiative</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>43</h3>
+                                <p>Company Processes</p>
+                            </div>
+                        </div>
+
+                        <!-- Executive Summary -->
+                        <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
+                            <h3>Executive Summary <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) c4d5e6f7-g8h9-i0j1-k2l3-m4n5o6p7q8r9</h3>
+                            <ul style="color: #000; line-height: 1.8; font-size: 16px;">
+                                <li><strong>Readiness Champion:</strong> Investments leads enterprise with highest Readiness score (57), demonstrating exceptional adaptability and learning agility</li>
+                                <li><strong>Balanced Foundation:</strong> Consistent performance across AI Literacy (54) and Attitude (56) creates solid platform for rapid AI scaling</li>
+                                <li><strong>Governance Crisis:</strong> Critical weakness in AI policy framework (52) requires immediate attention to prevent compliance risks</li>
+                            </ul>
+                        </div>
+
+                        <!-- Core Strengths -->
+                        <div class="analysis-section">
+                            <h3>Core Strengths & Competitive Advantages <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 7x2y8z9a-b3c4-d5e6-f7g8-h9i0j1k2l3m4</h3>
+                            
+                            <h4>Change Leadership Excellence</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Readiness Leadership (57):</strong> Highest organizational readiness demonstrates exceptional change adaptability and learning culture</li>
+                                <li><strong>AI Literacy Foundation (54):</strong> Solid technical understanding enables advanced AI implementation in investment analysis</li>
+                            </ul>
+
+                            <h4>Strategic Capabilities</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Attitude Excellence (56):</strong> Strong initiative and self-directed learning capability drives innovation</li>
+                                <li><strong>Yield Recognition (57):</strong> Clear vision of AI's transformative potential in investment processes</li>
+                            </ul>
+
+                            <h4>Risk Management Expertise</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Due Diligence Skills:</strong> Investment analysis expertise translates directly to AI vendor evaluation and risk assessment</li>
+                                <li><strong>Framework Development:</strong> Experience with investment frameworks enables sophisticated AI governance structures</li>
+                            </ul>
+                        </div>
+
+                        <!-- Critical Issues -->
+                        <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
+                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 1m2n3o4p-5q6r-7s8t-9u0v-w1x2y3z4a5b6</h3>
+                            
+                            <h4>Governance Crisis (Score: 52)</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Policy Framework Gap:</strong> Lack of AI governance structure despite natural risk management expertise</li>
+                                <li><strong>Compliance Exposure:</strong> Missing executive accountability and third-party AI vendor oversight protocols</li>
+                            </ul>
+
+                            <h4>Implementation & Collaboration Gaps</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Execution Challenges (55):</strong> Limited AI tool access and workflow integration capabilities</li>
+                                <li><strong>Sharing Culture (66):</strong> Good knowledge sharing but room for improvement</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </section>
+
+                <!-- Business Development Analysis-->
+                <section id="BusinessDevelopment" class="section page-break">
+                    <div class="section-header-custom">Business Development</div>
+                    
+                    <div class="content">
+                        <!-- Score Dashboard -->
+                        <div class="score-grid">
+                            <div class="score-card medium">
+                                <h3>61</h3>
+                                <p>Governance</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>61</h3>
+                                <p>Readiness</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>65</h3>
+                                <p>Execution</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>64</h3>
+                                <p>Yield Potential</p>
+                            </div>
+                        </div>
+
+                        <div class="score-grid" style="margin-top: 20px;">
+                            <div class="score-card medium">
+                                <h3>61</h3>
+                                <p>AI Literacy</p>
+                            </div>
+                            <div class="score-card high">
+                                <h3>80</h3>
+                                <p>Sharing Culture</p>
+                            </div>
+                            <div class="score-card medium-high">
+                                <h3>68</h3>
+                                <p>Attitude & Initiative</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>45</h3>
+                                <p>Company Processes</p>
+                            </div>
+                        </div>
+
+                        <!-- Executive Summary -->
+                        <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
+                            <h3>Executive Summary <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 7a3d5e1f-8b2c-4f6a-9d1e-0c2f4a5b6c7d</span></h3>
+                            <ul style="color: #000; line-height: 1.8; font-size: 16px;">
+                                <li><strong>Enterprise AI Champion:</strong> Business Development leads all divisions with GREY Score of 63, demonstrating balanced excellence across technical and organizational capabilities</li>
+                                <li><strong>Immediate Mentoring Opportunity:</strong> Highest AI Literacy (61) and Execution (65) scores position team as ideal mentor for struggling divisions</li>
+                                <li><strong>ROI Leadership:</strong> Exceptional Yield recognition (64) combined with strong implementation capability drives measurable business value</li>
+                            </ul>
+                        </div>
+
+                        <!-- Core Strengths -->
+                        <div class="analysis-section">
+                            <h3>Core Strengths & Competitive Advantages <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) e4f5a6b7-c8d9-4e0f-a1b2-c3d4e5f6a7b8</span></h3>
+                            
+                            <h4>Technical Excellence</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>AI Literacy Leadership (61):</strong> Deepest technical understanding across enterprise - above organizational average</li>
+                                <li><strong>Yield Optimization (64):</strong> Clear vision of AI's ROI potential with documented value creation track record</li>
+                            </ul>
+
+                            <h4>Organizational Readiness</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Change Leadership (61):</strong> Highest readiness score demonstrates exceptional adaptability and learning agility</li>
+                                <li><strong>Strategic Mindset (68):</strong> Superior attitude and initiative scores indicate self-directed innovation capability</li>
+                            </ul>
+
+                            <h4>Business Impact Potential</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Client-Facing Innovation:</strong> Customer interaction expertise ideal for AI-enhanced service delivery</li>
+                                <li><strong>Revenue Generation:</strong> Direct impact on business development outcomes and competitive positioning</li>
+                            </ul>
+                        </div>
+
+                        <!-- Critical Issues -->
+                        <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
+                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 9c8d7e6f-5a4b-3c2d-1e0f-9a8b7c6d5e4f</span></h3>
+                            
+                            <h4>Collaboration Excellence (Score: 80)</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Knowledge Sharing Leader:</strong> Exceptional sharing culture sets standard for enterprise</li>
+                                <li><strong>Best Practice Documentation:</strong> Successful AI implementations need systematic capture and sharing</li>
+                            </ul>
+
+                            <h4>Organizational Support Infrastructure (Score: 45)</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Resource Access Gaps:</strong> Limited company process support may constrain scaling potential</li>
+                                <li><strong>Tool Standardization:</strong> Inconsistent access to enterprise AI platforms across team members</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 10: CEO & Operations Analysis -->
+                <section id="CEOOperations" class="section page-break">
+                    <div class="section-header-custom">CEO & Operations Group</div>
+
+                    <div class="content">
+                        <div class="score-grid">
+                            <div class="score-card medium-low">
+                                <h3>54</h3>
+                                <p>Governance</p>
+                            </div>
+                            <div class="score-card medium-low">
+                                <h3>55</h3>
+                                <p>Readiness</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>43</h3>
+                                <p>Execution</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>59</h3>
+                                <p>Yield Potential</p>
+                            </div>
+                        </div>
+
+                        <div class="score-grid" style="margin-top: 20px;">
+                            <div class="score-card medium">
+                                <h3>57</h3>
+                                <p>AI Literacy</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>62</h3>
+                                <p>Sharing Culture</p>
+                            </div>
+                            <div class="score-card medium">
+                                <h3>58</h3>
+                                <p>Attitude & Initiative</p>
+                            </div>
+                            <div class="score-card low">
+                                <h3>36</h3>
+                                <p>Company Processes</p>
+                            </div>
+                        </div>
+
+                        <!-- Executive Summary -->
+                        <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
+                            <h3>Executive Summary <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e</span></h3>
+                            <ul style="color: #000; line-height: 1.8; font-size: 16px;">
+                                <li><strong>Execution Emergency:</strong> Critical execution breakdown (43) threatens all AI initiatives and requires immediate Business Development intervention</li>
+                                <li><strong>Strong AI Vision:</strong> Solid Yield recognition (59) and AI Literacy (57) demonstrate clear understanding of AI's transformative potential</li>
+                                <li><strong>CEO Leadership Opportunity:</strong> Executive involvement essential for driving enterprise-wide AI transformation and crisis resolution</li>
+                            </ul>
+                        </div>
+
+                        <!-- Core Strengths -->
+                        <div class="analysis-section">
+                            <h3>Core Strengths & Competitive Advantages <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) a1b2c3d4-e5f6-7890-1234-56789abcdef0</span></h3>
+                            
+                            <h4>Strategic Vision Excellence</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Yield Recognition (59):</strong> Clear vision of AI's business transformation potential - understanding drives enterprise strategy</li>
+                                <li><strong>AI Literacy Leadership (57):</strong> Strong technical understanding provides solid foundation for advanced implementation</li>
+                            </ul>
+
+                            <h4>Leadership Capabilities</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Executive Authority:</strong> CEO leadership critical for driving enterprise-wide AI adoption and resource allocation</li>
+                                <li><strong>Strategic Mindset (58):</strong> Positive attitude toward AI transformation with willingness to lead change</li>
+                            </ul>
+
+                            <h4>Transformation Potential</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Operational Impact:</strong> Direct influence on enterprise efficiency and AI-driven process optimization</li>
+                                <li><strong>Cross-Functional Leadership:</strong> Unique position to drive AI adoption across all business divisions</li>
+                            </ul>
+                        </div>
+
+                        <!-- Critical Issues -->
+                        <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
+                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) f0e1d2c3-b4a5-9687-7c6b-5a4938271605</span></h3>
+                            
+                            <h4>Execution Crisis (Score: 43)</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Implementation Breakdown:</strong> Severe inability to convert AI concepts into working solutions threatens all initiatives</li>
+                                <li><strong>Tool Access Barriers:</strong> Limited access to enterprise AI platforms and systematic training programs</li>
+                            </ul>
+
+                            <h4>Infrastructure & Collaboration Gaps</h4>
+                            <ul style="color: #555; line-height: 1.8;">
+                                <li><strong>Sharing Culture (62):</strong> Good knowledge sharing capabilities across teams</li>
+                                <li><strong>Company Processes (36):</strong> Poor access to AI resources and organizational support systems</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Page 4: Quick Wins -->
+                <section id="quick-wins" class="section page-break">
+                    <div class="section-header-custom">Quick-Win Initiatives</div>
+                    
+                    <p class="mb-4">Top 5 quick-wins with owners and KPIs identified through gap analysis and champion-mentor strategy.</p>
+                    
+                    <div class="highlight-section-custom">
+                        <h4>Priority Quick Wins</h4>
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <div class="card summary-card-custom p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">1</span>
+                                        <h5 class="mb-0">Emergency Execution Intervention</h5>
+                                    </div>
+                                    <p class="text-muted mb-2">Deploy Business Development as emergency mentors for CEO & Operations Group execution crisis</p>
+                                    <div class="d-flex gap-3 small">
+                                        <span><strong>Timeline:</strong> 30 days</span>
+                                        <span><strong>Impact:</strong> +15 point improvement</span>
+                                        <span><strong>Effort:</strong> Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card summary-card-custom p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">2</span>
+                                        <h5 class="mb-0">Collaboration Culture Revival</h5>
+                                    </div>
+                                    <p class="text-muted mb-2">Address Finance & Accounting sharing culture breakdown through structured knowledge sharing</p>
+                                    <div class="d-flex gap-3 small">
+                                        <span><strong>Timeline:</strong> 30 days</span>
+                                        <span><strong>Impact:</strong> +12 point improvement</span>
+                                        <span><strong>Effort:</strong> Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card summary-card-custom p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">3</span>
+                                        <h5 class="mb-0">Champion-Led AI Center of Excellence</h5>
+                                    </div>
+                                    <p class="text-muted mb-2">Leverage Business Development's 61 AI Literacy score to create internal mentor program</p>
+                                    <div class="d-flex gap-3 small">
+                                        <span><strong>Timeline:</strong> 30 days</span>
+                                        <span><strong>Impact:</strong> +18 point improvement</span>
+                                        <span><strong>Effort:</strong> Low</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card summary-card-custom p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">4</span>
+                                        <h5 class="mb-0">AI Governance Framework</h5>
+                                    </div>
+                                    <p class="text-muted mb-2">Establish enterprise AI governance leveraging Finance's natural risk management skills</p>
+                                    <div class="d-flex gap-3 small">
+                                        <span><strong>Timeline:</strong> 60 days</span>
+                                        <span><strong>Impact:</strong> +10 point improvement</span>
+                                        <span><strong>Effort:</strong> Medium</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="card summary-card-custom p-3">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <span class="badge bg-dark rounded-circle me-3" style="width: 30px; height: 30px; display: flex; align-items: center; justify-content: center;">5</span>
+                                        <h5 class="mb-0">Readiness Infrastructure Sprint</h5>
+                                    </div>
+                                    <p class="text-muted mb-2">Address critical readiness gaps with targeted infrastructure and training improvements</p>
+                                    <div class="d-flex gap-3 small">
+                                        <span><strong>Timeline:</strong> 90 days</span>
+                                        <span><strong>Impact:</strong> +8 point improvement</span>
+                                        <span><strong>Effort:</strong> Medium</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+        
+
+                <!-- Page 5: Evidence & Documentation -->
+                <section id="evidence" class="section page-break">
+                    <div class="section-header-custom">Evidence & Documentation</div>
+                    
+                    <p class="mb-4">Survey statistics, key quotes, themes, and risk log supporting the assessment findings.</p>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <div class="highlight-section-custom">
+                                <h4>Survey Statistics</h4>
+                                <ul>
+                                    <li><strong>Response Rate:</strong> 100% (19 of 19 employees)</li>
+                                    <li><strong>Assessment Duration:</strong> 2 weeks</li>
+                                    <li><strong>Interview Sessions:</strong> 6 leadership interviews</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="highlight-section-custom">
+                                <h4>Key Themes</h4>
+                                <ul>
+                                    <li>Company-wide excitement about AI’s productivity potential</li>
+                                    <li>Inbox and task overload spark demand for automation and AI agents</li>
+                                    <li>Teams seek practical coaching—more prompt training, office hours, and live help-desk support</li>
+                                    <li>Cleaner, structured data map and consistent processes viewed as key to scaling AI wins</li>
+                                    <li>Quick-win pilots (30-90 days) to demonstrate value fast</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="highlight-section-custom">
+                                <h4>Key Quotes from Leadership</h4>
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"We get lost in Slack—can an assistant pull the action items out and drop them straight into Asana for me?"</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"I really want an AI chief-of-staff—something better than an EA—to sort email, build my to-do list and manage the calendar."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"I don’t have strong [support] —AI needs to wear some of those hats."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"Give me more prompt-engineering training … ‘How Not to Give Up’ would be the perfect title."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"Anything that gives us…automations we can just pick and use is better than us trying to spec everything from scratch."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"It’s almost like I need a personal trainer … I need the handheld model a little bit."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"[We are] literally recording thousands of transactions in Excel…massive spreadsheets…—there’s got to be a better way; just tell me where we can automate."</p>
+                                </blockquote>
+
+                                <blockquote class="blockquote">
+                                    <p class="mb-3">"Connecting all these different data sources is hugely painful and leads to errors."</p>
+                                </blockquote>
+                                
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="highlight-section-custom">
+                                <h4>Risk Log <span style="font-size: 14px; color: #8b2c2c;">For Review (Details not yet changed). Let claude to update a1b2c3d4-e5f6-7890-g1h2-i3j4k5l6m7n8</span></h4>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead style="background: var(--spark-gray);">
+                                            <tr>
+                                                <th>Risk Category</th>
+                                                <th>Description</th>
+                                                <th>Priority</th>
+                                                <th>Mitigation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>Execution Crisis</strong></td>
+                                                <td>CEO & Operations Group unable to implement AI solutions</td>
+                                                <td><span>Critical</span></td>
+                                                <td>Emergency Business Development mentoring</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Collaboration Breakdown</strong></td>
+                                                <td>Finance & Accounting sharing culture failure</td>
+                                                <td><span>Critical</span></td>
+                                                <td>Structured knowledge sharing program</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Knowledge Silos</strong></td>
+                                                <td>Limited cross-division AI learning and best practice sharing</td>
+                                                <td><span>High</span></td>
+                                                <td>Champion-led Center of Excellence</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>Infrastructure Gaps</strong></td>
+                                                <td>Limited access to AI tools and training resources</td>
+                                                <td><span>Medium</span></td>
+                                                <td>Phased readiness improvement program</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </main>
+
+            
+        <!-- PDF Generation Loading Overlay -->
+        <div class="pdf-overlay" id="pdfOverlay">
+            <div class="pdf-loader">
+                <div class="pdf-loader-spinner"></div>
+                <h5>Generating PDF...</h5>
+                <p class="text-muted mb-0">This may take a few moments</p>
+            </div>
+        </div>
+        </div>
+    </div>
+
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Login function
+        function login(event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Get input values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            // Clear previous error message
+            errorMessage.textContent = '';
+            errorMessage.classList.remove('hidden');
+            
+            // Simple validation (in a real app, this would be done on a server)
+            if ((username === 'admin' && password === ' IMB082025') || 
+                (username === 'user' && password === ' IMB082025')) {
+                // Store login state in local storage (persists after refresh)
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('username', username);
+                
+                // Show welcome page and hide login form
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('welcomePage').classList.remove('hidden');
+                document.getElementById('greeting').textContent = `Hello, ${username}!`;
+                
+                errorMessage.classList.add('hidden');
+            } else {
+                errorMessage.textContent = 'Invalid username or password';
+            }
+        }
+        
+        // Logout function
+        function logout() {
+            // Clear login state
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('username');
+            
+            // Show login form and hide welcome page
+            document.getElementById('loginForm').classList.remove('hidden');
+            document.getElementById('welcomePage').classList.add('hidden');
+            
+            // Clear the form
+            document.getElementById('login').reset();
+        }
+        
+        // Check login state on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const username = localStorage.getItem('username');
+            
+            // Check if user is logged in
+            if (isLoggedIn === 'true' && username) {
+                // User is logged in, show welcome page
+                document.getElementById('loginForm').classList.add('hidden');
+                document.getElementById('welcomePage').classList.remove('hidden');
+                document.getElementById('greeting').textContent = `Hello, ${username}!`;
+            } else {
+                // Ensure login form is visible
+                document.getElementById('loginForm').classList.remove('hidden');
+                document.getElementById('welcomePage').classList.add('hidden');
+            }
+        });
+
+
+
+
+
+
+
+        let currentPage = 1;
+        const totalPages = 10;
+        let currentMode = 'section'; // 'section' for scrolling sections, 'page' for division pages
+
+        // Set current date
+        const currentDate = new Date().toLocaleDateString('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        
+        document.querySelectorAll('[id^="current-date"]').forEach(el => {
+            el.textContent = currentDate;
+        });
+
+        // Function to get score color class based on value
+        function getScoreClass(score) {
+            const numScore = parseInt(score);
+            if (numScore <= 30) return 'critical';
+            if (numScore <= 45) return 'low';
+            if (numScore <= 55) return 'medium-low';
+            if (numScore <= 65) return 'medium';
+            if (numScore <= 75) return 'medium-high';
+            return 'high';
+        }
+
+        // Apply dynamic colors to all score elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Update score cards
+            document.querySelectorAll('.score-card').forEach(card => {
+                const scoreText = card.querySelector('h3').textContent;
+                const score = parseInt(scoreText);
+                if (!isNaN(score)) {
+                    const scoreClass = getScoreClass(score);
+                    card.className = 'score-card ' + scoreClass;
+                }
+            });
+
+            // Sidebar functionality
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebarWrapper = document.getElementById('sidebarWrapper');
+            const mainContent = document.getElementById('mainContent');
+            const toggleIcon = sidebarToggle?.querySelector('i');
+
+            // Toggle sidebar functionality
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebarWrapper.classList.toggle('collapsed');
+                    mainContent.classList.toggle('expanded');
+                    sidebarToggle.classList.toggle('collapsed');
+                    
+                    // Change icon
+                    if (sidebarWrapper.classList.contains('collapsed')) {
+                        toggleIcon.classList.remove('bi-list');
+                        toggleIcon.classList.add('bi-arrow-right');
+                    } else {
+                        toggleIcon.classList.remove('bi-arrow-right');
+                        toggleIcon.classList.add('bi-list');
+                    }
+                });
+            }
+
+            // Section navigation
+            const sectionLinks = document.querySelectorAll('a[data-section]');
+            const sections = document.querySelectorAll('.section[id]');
+            const headerHeight = 80;
+
+            // Smooth scroll to section when navigation link is clicked
+            sectionLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('data-section');
+                    currentMode = 'section';
+                    
+                    // Hide all division pages
+                    document.querySelectorAll('.page').forEach(page => {
+                        page.classList.remove('active');
+                    });
+                    
+                    scrollToSection(targetId);
+                });
+            });
+
+            // Update active navigation item based on scroll position
+            function updateActiveNavLink(activeId = null) {
+                document.querySelectorAll('a[data-section]').forEach(link => {
+                    link.classList.remove('active');
+                    
+                    const linkId = link.getAttribute('data-section');
+                    if (activeId === linkId || (!activeId && isElementInViewport(linkId))) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+
+            // Check if element is in viewport
+            function isElementInViewport(elementId) {
+                const element = document.getElementById(elementId);
+                if (!element) return false;
+                
+                const rect = element.getBoundingClientRect();
+                const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                
+                return rect.top <= windowHeight / 3 && rect.bottom >= 0;
+            }
+
+            // Update active state on scroll
+            let scrollTimeout;
+            window.addEventListener('scroll', function() {
+                if (currentMode === 'section') {
+                    clearTimeout(scrollTimeout);
+                    scrollTimeout = setTimeout(() => {
+                        let activeSection = null;
+                        sections.forEach(section => {
+                            if (isElementInViewport(section.id)) {
+                                activeSection = section.id;
+                            }
+                        });
+                        
+                        if (activeSection) {
+                            updateActiveNavLink(activeSection);
+                        }
+                    }, 100);
+                }
+            });
+
+            // Set initial active state
+            updateActiveNavLink('about-report');
+
+            // Auto-collapse sidebar on mobile
+            if (window.innerWidth < 768) {
+                sidebarWrapper.classList.add('collapsed');
+                mainContent.classList.add('expanded');
+                if (sidebarToggle) {
+                    sidebarToggle.classList.add('collapsed');
+                    toggleIcon.classList.remove('bi-list');
+                    toggleIcon.classList.add('bi-arrow-right');
+                }
+            }
+        });
+
+        function scrollToSection(sectionId) {
+            const section = document.getElementById(sectionId);
+            if (section) {
+                const headerHeight = 80;
+                const offsetTop = section.offsetTop - headerHeight - 20;
+                
+                window.scrollTo({
+                    top: offsetTop,
+                    behavior: 'smooth'
+                });
+                
+                updateActiveNavLink(sectionId);
+            }
+        }
+
+        function updateActiveNavLink(activeId) {
+            document.querySelectorAll('a[data-section]').forEach(link => {
+                link.classList.remove('active');
+                
+                const linkId = link.getAttribute('data-section');
+                if (activeId === linkId) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
