@@ -398,6 +398,14 @@
             border-radius: 0 8px 8px 0;
         }
 
+        /* Highlight Section */
+        .highlight-section-custom-first {
+            background: #f5f5f5;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 8px;
+        }
+
         /* Overall Score Card */
         .overall-score-card {
             background: var(--spark-cyan);
@@ -1422,7 +1430,7 @@
 
                 <!-- Page 3: Executive Summary & Scores -->
                 <section id="executive-summary" class="section page-break">
-                    <div class="section-header-custom">Executive Summary & Scores</div>
+                    <div class="section-header-custom">Executive Summary</div>
                     
                     <!-- Centered Content Above Top-Line Implications -->
                     <div class="executive-summary-centered">
@@ -1476,6 +1484,7 @@
                         </div>
                     </div>
 
+                    
                     <!-- Left-aligned content from Top-Line Implications -->
                     <div class="executive-summary-left">
                         <!-- <div class="highlight-section-custom mb-4">
@@ -1494,7 +1503,7 @@
                             </p>
                         </div> -->
 
-                            <div class="analysis-section" style="background: #fff; border: 2px solid #ADFBF6;">
+                            <div class="highlight-section-custom-first">
                             <h3>High ROI Sprint Strategy</h3>
                             <p>The following recommendations are designed to deliver quick wins and continuous improvement, ensuring a sustainable path towards a fully AI-enabled organization. These strategies are rooted in our GREY Score research, addressing identified weaknesses and prioritizing practical, low-burden implementations that consider IMB Partners' specific needs and existing challenges.</p>
                             <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
@@ -1536,11 +1545,11 @@
                         
 
                         <!-- Success Metrics -->
-                        <div style="background: var(--spark-dark-gray); color: #fff; padding: 25px; border-radius: 8px; border: 2px solid var(--spark-cyan);">
-                            <h3 style="color: #fff; margin-bottom: 15px;">📈 14-DAY QUICK WINS</span></h3>
+                        <div style="background: var(--score-medium); color: #77a3a7; padding: 25px; border-radius: 8px;">
+                            <h3 style="color: #000000; margin-bottom: 15px;">📈 14-DAY QUICK WINS</span></h3>
                             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
                                 <div>
-                                    <ol style="color: #fff; line-height: 1.8;">
+                                    <ol style="color: #000000; line-height: 1.8;">
                                         <li>Complete Chief-of-Staff (CoS) Automation; release quick-reference guide (QRG)</li>
                                         <li>Launch firm-wide Microsoft 365 Custom Outlook Agent</li>
                                         <li>Enable and connect Read.ai (or similar) STT (speech to text) technology</li>
@@ -1941,19 +1950,25 @@
                         </div>
 
                         <!-- Critical Issues -->
-                        <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
-                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e</span></h3>
-                            
-                            <h4>Collaboration Excellence (Score: 80)</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Resource Constraints:</strong> Inconsistent access to approved AI tools and platforms may cap scalability.</li>
-                                <li><strong>Workflow Standardisation:</strong> Need formalised procedures for model governance, deployment and monitoring.</li>
+                        <div class="analysis-section" style="background:#fff;border:2px solid var(--spark-gray);">
+                            <h3>Critical Issues &amp; Development Areas</h3>
+
+                            <h4>Process &amp; Resource Maturity (Score: 56)</h4>
+                            <ul style="color:#555;line-height:1.8;">
+                                <li><strong>Standardisation Needed:</strong> Inconsistent access to enterprise AI platforms and tooling may hinder team-wide scalability.</li>
+                                <li><strong>Formal Workflows:</strong> Limited documented procedures could slow onboarding of new AI projects and partners.</li>
                             </ul>
 
-                            <h4>Organizational Support Infrastructure (Score: 45)</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Resource Access Gaps:</strong> Limited company process support may constrain scaling potential</li>
-                                <li><strong>Tool Standardization:</strong> Inconsistent access to enterprise AI platforms across team members</li>
+                            <h4>Governance &amp; Compliance Reinforcement (Score: 61)</h4>
+                            <ul style="color:#555;line-height:1.8;">
+                                <li><strong>Policy Evolution:</strong> Governance is sound but requires additional controls for model risk management and data privacy as deployments expand.</li>
+                                <li><strong>Cross-Division Alignment:</strong> Ensure Business Development’s fast-moving initiatives integrate with enterprise-wide AI oversight structures.</li>
+                            </ul>
+
+                            <h4>Knowledge-Sharing Optimisation (Score: 58)</h4>
+                            <ul style="color:#555;line-height:1.8;">
+                                <li><strong>Best-Practice Capture:</strong> High collaboration culture should be formalised into playbooks to accelerate learning across divisions.</li>
+                                <li><strong>Mentorship Programme:</strong> Leverage team strengths to coach Finance &amp; Accounting and Investments on advanced AI tactics.</li>
                             </ul>
                         </div>
                     </div>
