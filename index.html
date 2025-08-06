@@ -9,6 +9,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 
@@ -397,6 +398,7 @@ button:hover {
     gap: 10px;
 }
 
+
 .quote-block {
     padding: 18px 24px;
     background: #ffffff;
@@ -515,7 +517,7 @@ button:hover {
 
 /* Highlight Section */
 .highlight-section-custom-first {
-    background: var(--spark-dark-gray);
+    background: var(--spark-light-cyan);
     padding: 1.5rem;
     margin: 1.5rem 0;
     border-radius: 8px;
@@ -1167,6 +1169,129 @@ html {
     transform: none;
 }
 
+.sprint-card {
+        transition: all 0.3s ease;
+        border: 2px solid var(--spark-gray);
+        background: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transform: translateY(0);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.sprint-card:hover {
+        transform: translateY(-10px) scale(1.02);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        border-color: var(--spark-dark-gray);
+        background: rgba(255, 255, 255, 0.2);
+        z-index: 10; /* Bring to front on hover */
+}
+
+.sprint-card .card-body {
+        padding: 1.25rem;
+}
+
+.highlight-section-custom-testimonials {
+      padding: 30px;
+      background: var(--card-bg);
+      border: 1px solid var(--spark-gray);
+      border-radius: 12px;
+      text-align: center;
+      margin: 30px auto;
+      max-width: 900px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .highlight-quote {
+      font-size: 1.4rem;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--spark-dark-gray);
+      margin: 0 auto;
+      max-width: 700px;
+    }
+
+    .highlight-author {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 1.1rem;
+    }
+
+    .highlight-role {
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    /* Horizontal Scrollable Container */
+    .testimonial-row {
+    display: flex;
+    gap: 16px;
+    padding: 0;
+    width: 100%;
+    }
+
+    .testimonial-row::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .testimonial-row::-webkit-scrollbar-thumb {
+      background-color: var(--spark-gray);
+      border-radius: 6px;
+    }
+
+    .testimonial-row::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .testimonial-card {
+        flex: 1; /* Key: each card grows to fill space */
+      
+      background: var(--card-bg);
+      border: 1px solid var(--spark-gray);
+      border-radius: 12px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+      flex-direction: column;
+    }
+
+    .testimonial-card:hover {
+      transform: translateY(-6px) scale(1.02);
+      box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+      background: var(--card-hover-bg);
+      border-color: var(--spark-primary);
+      z-index: 5;
+    }
+
+    .testimonial-text {
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--spark-dark-gray);
+      margin: 0;
+      font-size: 14px;
+    }
+
+    .testimonial-author {
+      font-weight: bold;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .testimonial-role {
+      font-size: 12px;
+      color: #666;
+    }
+
+    /* Responsive: Reduce card size on small screens */
+    @media (max-width: 768px) {
+      .highlight-quote {
+        font-size: 1.2rem;
+      }
+      .testimonial-card {
+        flex: 0 0 260px;
+      }
+    }
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .header-custom {
@@ -1303,56 +1428,52 @@ html {
     }
 }
 </style>
+
 </head>
 <body class="bg-white">
 
-        <!-- Login Form -->
-        <div class="login-form" id="loginForm">
-        <img
-            src="https://i.imgur.com/ZACrZu4.png"
-            alt="Grey AI Logo"
-            width="150"
-            height="50"
-            style="max-width: 100%; height: auto; margin-bottom: 2rem;"/>
+    <!-- Login Form -->
+    <div class="login-form" id="loginForm">
+        <img src="https://i.imgur.com/ZACrZu4.png" alt="Grey AI Logo" width="150" height="50"
+            style="max-width: 100%; height: auto; margin-bottom: 2rem;" />
 
         <h2>Login</h2>
         <form id="login" onsubmit="login(event)">
             <div class="form-group">
-            <label for="username">Username</label>
-            <input type="text" id="username" required>
+                <label for="username">Username</label>
+                <input type="text" id="username" required>
             </div>
             <div class="form-group">
-            <label for="password">Password</label>
-            <input type="password" id="password" required>
+                <label for="password">Password</label>
+                <input type="password" id="password" required>
             </div>
             <div id="errorMessage" class="error">Invalid username or password</div>
             <button type="submit">Login</button>
         </form>
-        </div>
-
+    </div>
 
 
     <!-- Welcome Page (hidden initially) -->
     <div class="welcome-page hidden" id="welcomePage">
-            <!-- Header -->
-            <header class="header-custom sticky-top py-3 px-4">
-                <div class="header-content">
-                    <div class="header-left">
-                        <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
-                        <div class="text-muted small">IMB Partners • August 2025</div>
-                    </div>
-                    
-                    <div class="header-right">
-                        <button class="pdf-button no-print" onclick="generatePDF()" id="pdfButton">
-                            <i class="bi bi-file-earmark-pdf"></i> <span class="button-text">Save as PDF</span>
-                        </button>
-                        
-                        <button class="logout-btn" onclick="logout()">
-                            <i class="bi bi-box-arrow-right"></i> <span class="button-text">Logout</span>
-                        </button>
-                    </div>
+        <!-- Header -->
+        <header class="header-custom sticky-top py-3 px-4">
+            <div class="header-content">
+                <div class="header-left">
+                    <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
+                    <div class="text-muted small">IMB Partners • August 2025</div>
                 </div>
-            </header>
+
+                <div class="header-right">
+                    <button class="pdf-button no-print" onclick="generatePDF()" id="pdfButton">
+                        <i class="bi bi-file-earmark-pdf"></i> <span class="button-text">Save as PDF</span>
+                    </button>
+
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="bi bi-box-arrow-right"></i> <span class="button-text">Logout</span>
+                    </button>
+                </div>
+            </div>
+        </header>
 
         <!-- Sidebar Toggle Button -->
         <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
@@ -1369,7 +1490,8 @@ html {
                 <a class="toc-item" href="#Division" data-section="Division">Division Analysis Overview</a>
                 <a class="toc-item" href="#Finance" data-section="Finance">Finance & Accounting</a>
                 <a class="toc-item" href="#Investments" data-section="Investments">Investments</a>
-                <a class="toc-item" href="#BusinessDevelopment" data-section="BusinessDevelopment">Business Development</a>
+                <a class="toc-item" href="#BusinessDevelopment" data-section="BusinessDevelopment">Business
+                    Development</a>
                 <a class="toc-item" href="#CEOOperations" data-section="CEOOperations">CEO & Operations Group</a>
                 <a class="toc-item" href="#evidence" data-section="evidence">Evidence & Documentation</a>
             </nav>
@@ -1378,13 +1500,16 @@ html {
         <!-- Main Content -->
         <div class="main-content-wrapper" id="mainContent">
             <main class="container-fluid px-4 py-4">
-                
+
                 <!-- Page 1: About Your Report -->
                 <section id="about-report" class="section">
                     <div class="section-header-custom">About Your Report</div>
-                    
+
                     <p class="mb-4">
-                        Your GREY Score™ Report provides a comprehensive analysis of your organization's AI maturity. Through our proprietary assessment methodology, we deliver actionable insights that enable you to benchmark your current state, identify critical gaps, and chart a strategic path toward becoming truly AI-first.
+                        Your GREY Score™ Report provides a comprehensive analysis of your organization's AI maturity.
+                        Through our proprietary assessment methodology, we deliver actionable insights that enable you
+                        to benchmark your current state, identify critical gaps, and chart a strategic path toward
+                        becoming truly AI-first.
                     </p>
 
                     <div class="assessment-overview">
@@ -1401,8 +1526,10 @@ html {
                             <tbody>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path
+                                                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                         </svg>
                                         About Your Report
                                     </td>
@@ -1411,10 +1538,11 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <rect x="3" y="3" width="18" height="18" rx="2"/>
-                                            <path d="M3 9h18"/>
-                                            <path d="M9 21V9"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <rect x="3" y="3" width="18" height="18" rx="2" />
+                                            <path d="M3 9h18" />
+                                            <path d="M9 21V9" />
                                         </svg>
                                         Assessment Methodology
                                     </td>
@@ -1423,16 +1551,17 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <rect x="3" y="3" width="6" height="6" fill="#434343" opacity="0.2"/>
-                                            <rect x="11" y="3" width="6" height="6" fill="#434343" opacity="0.4"/>
-                                            <rect x="19" y="3" width="2" height="6" fill="#434343" opacity="0.6"/>
-                                            <rect x="3" y="11" width="6" height="6" fill="#434343" opacity="0.6"/>
-                                            <rect x="11" y="11" width="6" height="6" fill="#434343" opacity="0.8"/>
-                                            <rect x="19" y="11" width="2" height="6" fill="#434343" opacity="0.4"/>
-                                            <rect x="3" y="19" width="6" height="2" fill="#434343" opacity="0.3"/>
-                                            <rect x="11" y="19" width="6" height="2" fill="#434343" opacity="0.5"/>
-                                            <rect x="19" y="19" width="2" height="2" fill="#434343" opacity="0.7"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <rect x="3" y="3" width="6" height="6" fill="#434343" opacity="0.2" />
+                                            <rect x="11" y="3" width="6" height="6" fill="#434343" opacity="0.4" />
+                                            <rect x="19" y="3" width="2" height="6" fill="#434343" opacity="0.6" />
+                                            <rect x="3" y="11" width="6" height="6" fill="#434343" opacity="0.6" />
+                                            <rect x="11" y="11" width="6" height="6" fill="#434343" opacity="0.8" />
+                                            <rect x="19" y="11" width="2" height="6" fill="#434343" opacity="0.4" />
+                                            <rect x="3" y="19" width="6" height="2" fill="#434343" opacity="0.3" />
+                                            <rect x="11" y="19" width="6" height="2" fill="#434343" opacity="0.5" />
+                                            <rect x="19" y="19" width="2" height="2" fill="#434343" opacity="0.7" />
                                         </svg>
                                         Executive Summary & Scores
                                     </td>
@@ -1441,9 +1570,10 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                         </svg>
                                         Division Analysis Overview
                                     </td>
@@ -1452,8 +1582,9 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
                                         </svg>
                                         Finance & Accounting Analysis
                                     </td>
@@ -1462,8 +1593,10 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path
+                                                d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83" />
                                         </svg>
                                         Investments Analysis
                                     </td>
@@ -1472,8 +1605,10 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path
+                                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
                                         </svg>
                                         Business Development Analysis
                                     </td>
@@ -1482,10 +1617,11 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <circle cx="12" cy="12" r="10"/>
-                                            <path d="M16 12h-6"/>
-                                            <path d="M12 16V8"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <circle cx="12" cy="12" r="10" />
+                                            <path d="M16 12h-6" />
+                                            <path d="M12 16V8" />
                                         </svg>
                                         CEO & Operations Group Analysis
                                     </td>
@@ -1494,9 +1630,10 @@ html {
                                 </tr>
                                 <tr>
                                     <td class="section-name">
-                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#434343" stroke-width="2">
-                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                                            <polyline points="14 2 14 8 20 8"/>
+                                        <svg class="section-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                            stroke="#434343" stroke-width="2">
+                                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                                            <polyline points="14 2 14 8 20 8" />
                                         </svg>
                                         Evidence & Documentation
                                     </td>
@@ -1509,8 +1646,12 @@ html {
 
                     <div class="maturity-scale">
                         <h3 class="scale-title">Understanding Your AI Maturity Score</h3>
-                        <p class="scale-description">Your organization receives an overall GREY Score™ between 1-100, complemented by four individual pillar scores. This composite scoring system enables precise identification of strengths and opportunities across your AI landscape. Organizations progress through five distinct maturity stages, each representing a significant evolution in AI capability and value creation.</p>
-                        
+                        <p class="scale-description">Your organization receives an overall GREY Score™ between 1-100,
+                            complemented by four individual pillar scores. This composite scoring system enables precise
+                            identification of strengths and opportunities across your AI landscape. Organizations
+                            progress through five distinct maturity stages, each representing a significant evolution in
+                            AI capability and value creation.</p>
+
                         <div class="scale-container">
                             <div class="stepped-scale">
                                 <div class="step nascent">
@@ -1556,16 +1697,20 @@ html {
                 <!-- Page 2: Assessment Methodology -->
                 <section id="methodology" class="section page-break">
                     <div class="section-header-custom">The GREY Score™ Assessment Methodology</div>
-                    
+
                     <div class="assessment-overview">
-                        <h3>Our Proprietary Assessment Framework evaluates your organization across four critical pillars of AI maturity. Each pillar is rigorously analyzed through evidence-based criteria, generating individual scores that aggregate into your comprehensive GREY Score™.</h3>
-                        
+                        <h3>Our Proprietary Assessment Framework evaluates your organization across four critical
+                            pillars of AI maturity. Each pillar is rigorously analyzed through evidence-based criteria,
+                            generating individual scores that aggregate into your comprehensive GREY Score™.</h3>
+
                     </div>
 
                     <div class="pillars-section">
                         <h3 class="pillars-title">The Four Pillars of AI Maturity</h3>
-                        <p class="pillars-subtitle">Each pillar represents a critical dimension of AI excellence. Your individual pillar scores illuminate specific strengths and improvement areas, enabling targeted intervention strategies.</p>
-                        
+                        <p class="pillars-subtitle">Each pillar represents a critical dimension of AI excellence. Your
+                            individual pillar scores illuminate specific strengths and improvement areas, enabling
+                            targeted intervention strategies.</p>
+
                         <div class="pillars-grid-grey"> <!-- Changed class name here -->
                             <div class="pillar-card">
                                 <div class="pillar-letter-circle">
@@ -1579,7 +1724,7 @@ html {
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="pillar-card">
                                 <div class="pillar-letter-circle">
                                     <div class="pillar-letter">R</div>
@@ -1592,7 +1737,7 @@ html {
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="pillar-card">
                                 <div class="pillar-letter-circle">
                                     <div class="pillar-letter">E</div>
@@ -1605,7 +1750,7 @@ html {
                                     </ul>
                                 </div>
                             </div>
-                            
+
                             <div class="pillar-card">
                                 <div class="pillar-letter-circle">
                                     <div class="pillar-letter">Y</div>
@@ -1625,17 +1770,19 @@ html {
                 <!-- Page 3: Executive Summary & Scores -->
                 <section id="executive-summary" class="section page-break">
                     <div class="section-header-custom">Executive Summary</div>
-                    
+
                     <!-- Centered Content Above Top-Line Implications -->
                     <div class="executive-summary-centered">
                         <!-- Overall Score -->
                         <div class="row justify-content-center mb-4">
                             <div class="col-auto">
                                 <div class="card summary-card-custom overall-score-card text-center p-4">
-                                    <h2 class="h6 text-uppercase fw-bold mb-2" style="letter-spacing: 2px;">Overall GREY Score</h2>
+                                    <h2 class="h6 text-uppercase fw-bold mb-2" style="letter-spacing: 2px;">Overall GREY
+                                        Score</h2>
                                     <div class="value">56</div>
                                     <div class="mt-2">
-                                        <span class="badge" style="background: var(--spark-dark-gray); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; text-transform: uppercase;">Developing</span>
+                                        <span class="badge"
+                                            style="background: var(--spark-dark-gray); color: white; padding: 8px 20px; border-radius: 20px; font-size: 14px; text-transform: uppercase;">Developing</span>
                                     </div>
                                 </div>
                             </div>
@@ -1643,33 +1790,40 @@ html {
 
                         <div class="highlight-section-custom mb-4 text-center">
                             <p style="font-size: 16px; line-height: 1.6; margin: 0;">
-                                Your organization has moved beyond experimentation and is primed for rapid acceleration. Elevating AI-ready data management and targeted coaching to boost executive literacy will raise readiness and amplify performance. Well-designed strategic sprints will convert this momentum into visible ROI and decisive market leadership.
+                                Your organization has moved beyond experimentation and is primed for rapid acceleration.
+                                Elevating AI-ready data management and targeted coaching to boost executive literacy
+                                will raise readiness and amplify performance. Well-designed strategic sprints will
+                                convert this momentum into visible ROI and decisive market leadership.
                         </div>
 
                         <!-- Performance by Pillar -->
                         <h3 class="mb-4" style="color: var(--spark-dark-gray);">Performance by Pillar</h3>
-                        
+
                         <div class="row g-3 mb-5">
                             <div class="col-md-3">
-                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium-low);">
+                                <div class="card summary-card-custom text-center p-3"
+                                    style="background: var(--score-medium-low);">
                                     <h4 class="h6 text-uppercase fw-bold">Governance</h4>
                                     <div class="value fs-1">55</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium);">
+                                <div class="card summary-card-custom text-center p-3"
+                                    style="background: var(--score-medium);">
                                     <h4 class="h6 text-uppercase fw-bold">Readiness</h4>
                                     <div class="value fs-1">56</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium-low);">
+                                <div class="card summary-card-custom text-center p-3"
+                                    style="background: var(--score-medium-low);">
                                     <h4 class="h6 text-uppercase fw-bold">Execution</h4>
                                     <div class="value fs-1">55</div>
                                 </div>
                             </div>
                             <div class="col-md-3">
-                                <div class="card summary-card-custom text-center p-3" style="background: var(--score-medium);">
+                                <div class="card summary-card-custom text-center p-3"
+                                    style="background: var(--score-medium);">
                                     <h4 class="h6 text-uppercase fw-bold">Yield Potential</h4>
                                     <div class="value fs-1">59</div>
                                 </div>
@@ -1677,140 +1831,173 @@ html {
                         </div>
                     </div>
 
-                    
+
                     <!-- Left-aligned content from Top-Line Implications -->
                     <div class="executive-summary-left">
                         <!-- Success Metrics -->
-                        <div style="background: var(--spark-light-gray); color: #77a3a7; padding: 10px; border-radius: 8px;">
-                            <h3 style="color: #000000; margin-bottom: 15px; text-align: center; margin-top: 15px;">14-DAY QUICK WINS</span></h3>
-                        
-                        <!-- Page X: 14-Day Quick Wins -->
-                        <!-- Update the 14-Day Quick Wins section HTML -->
-                        <!-- Replace the pillars grid div in the Executive Summary section with this: -->
-                        <div class="pillars-section">
-                            <div class="pillars-grid-quickwins"> <!-- Changed class name here -->
-                                <!-- Quick Win 1 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">1</div>
-                                    </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Complete Chief-of-Staff (CoS) Automation; release quick-reference guide (QRGs)</li>
-                                        </ul>
-                                    </div>
-                                </div>
+                        <div
+                            style="background: var(--spark-light-gray); color: #77a3a7; padding: 10px; border-radius: 8px;">
+                            <h3 style="color: #000000; margin-bottom: 15px; text-align: center; margin-top: 15px;">
+                                14-DAY QUICK WINS</span></h3>
 
-                                <!-- Quick Win 2 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">2</div>
+                            <!-- Page X: 14-Day Quick Wins -->
+                            <!-- Update the 14-Day Quick Wins section HTML -->
+                            <!-- Replace the pillars grid div in the Executive Summary section with this: -->
+                            <div class="pillars-section">
+                                <div class="pillars-grid-quickwins"> <!-- Changed class name here -->
+                                    <!-- Quick Win 1 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">1</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Complete Chief-of-Staff (CoS) Automation; release quick-reference
+                                                    guide (QRGs)</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Launch firm-wide Microsoft 365 Custom Outlook Agent</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
-                                <!-- Quick Win 3 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">3</div>
+                                    <!-- Quick Win 2 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">2</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Launch firm-wide Microsoft 365 Custom Outlook Agent</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Enable and connect Read.ai (or similar) STT (speech to text) technology</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
-                                <!-- Quick Win 4 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">4</div>
+                                    <!-- Quick Win 3 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">3</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Enable and connect Read.ai (or similar) STT (speech to text)
+                                                    technology</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Book four weekly AI Executive Coaching sessions for COO, CIO and CFO</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
-                                <!-- Quick Win 5 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">5</div>
+                                    <!-- Quick Win 4 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">4</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Book four weekly AI Executive Coaching sessions for COO, CIO and CFO
+                                                </li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Scope up to 4 data repositories' categorization and tagging capabilities project</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
-                                <!-- Quick Win 6 -->
-                                <div class="pillar-card">
-                                    <div class="pillar-letter-circle-extra">
-                                        <div class="pillar-letter">6</div>
+                                    <!-- Quick Win 5 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">5</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Scope up to 4 data repositories' categorization and tagging
+                                                    capabilities project</li>
+                                            </ul>
+                                        </div>
                                     </div>
-                                    <div class="pillar-description">
-                                        <ul>
-                                            <li>Create and deploy company data taxonomy reference guide</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        </div>
 
-                        <!-- Make Cyan and Card -->
-                        <div class="highlight-section-custom-first">
-                            <h3 style="color: white">High ROI Sprint Strategy</h3>
-                            <p style="color: white">The following recommendations are designed to deliver quick wins and continuous improvement, ensuring a sustainable path towards a fully AI-enabled organization. These strategies are rooted in our GREY Score research, addressing identified weaknesses and prioritizing practical, low-burden implementations that consider IMB Partners' specific needs and existing challenges.</p>
-                            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; color: white;">
-                                <div>
-                                    <h4>30-Day Sprint</h4>
-                                    <ul style="color: white; line-height: 1.6; font-size: 13px;">
-                                        <li style="font-size: 14px;">Begin data repositories’ categorization and tagging capabilities project</li>
-                                        <li style="font-size: 14px;">Scope and build custom CoS Automation for COO, CFO, CEO; release quick-reference guide (QRGs)</li>
-                                        <li style="font-size: 14px;">Scope up to 2 Operations team Custom GPTs (e.g., HR)</li>
-                                        <li style="font-size: 14px;">Scope up to 2 Finance team Custom GPTs (e.g., data entry, AR & AP)</li>
-                                        <li style="font-size: 14px;">Scope "Ask-IMBeezy" GPT for internal document queries</li>
-                                        <li style="font-size: 14px;">Launch 60-day change management program</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4>60-Day Sprint</h4>
-                                    <ul style="color: white; line-height: 1.6; font-size: 13px;">
-                                        <li>Build up to 2 Operations team Custom GPTs; release QRGs</li>
-                                        <li>Build up to 2 Finance team Custom GPTs; release QRGs</li>
-                                        <li>Scope up to 2 Business Development team Custom GPTs (e.g., diligence, pitching)</li>
-                                        <li>Scope up to 2 Investment team Custom GPTs (e.g., CIM review, drafting)</li>
-                                        <li>Build internal "Ask-IMBeezy" GPT for internal document queries</li>
-                                        <li>Create AI Governance Committee and IMB Responsible AI Principles</li>
-                                    </ul>
-                                </div>
-                                <div>
-                                    <h4>90-Day Sprint</h4>
-                                    <ul style="color: white; line-height: 1.6; font-size: 13px;">
-                                        <li>Complete data repositories’ categorization and tagging capabilities project</li>
-                                        <li>Build up to 2 Investment team Custom GPTs; release QRGs</li>
-                                        <li>Build up to 2 Business Development team Custom GPTs; release QRGs</li>
-                                        <li>Scope and build custom CoS Automation for CIO; release QRG</li>
-                                        <li>Integrate CoS Automation package into selected employee inboxes</li>
-                                        <li>Publish IMB Responsible AI policy</li>
-                                    </ul>
+                                    <!-- Quick Win 6 -->
+                                    <div class="pillar-card">
+                                        <div class="pillar-letter-circle-extra">
+                                            <div class="pillar-letter">6</div>
+                                        </div>
+                                        <div class="pillar-description">
+                                            <ul>
+                                                <li>Create and deploy company data taxonomy reference guide</li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
+                        <div class="highlight-section-custom-first">
+                            <h3 style="color: var(--spark-dark-gray)" class="text-center">High ROI Sprint Strategy</h3>
+                            <p style="color: var(--spark-dark-gray)" class="text-center">The following recommendations are designed to deliver quick wins and
+                                continuous improvement, ensuring a sustainable path towards a fully AI-enabled organization. These strategies
+                                are rooted in our GREY Score research, addressing identified weaknesses and prioritizing practical, low-burden
+                                implementations that consider IMB Partners' specific needs and existing challenges.</p>
+                        
+                            <!-- Sprint Cards Container -->
+                            <div class="row g-3 mt-3">
+                                <!-- 30-Day Sprint Card -->
+                                <div class="col-lg-4">
+                                    <div class="card h-100 sprint-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-center mb-3" style="color: var(--spark-dark-gray); font-weight: bold;">
+                                                30-Day Sprint
+                                            </h4>
+                                            <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
+                                                <li>Begin data repositories' categorization and tagging capabilities project</li>
+                                                <li>Scope and build custom CoS Automation for COO, CFO, CEO; release quick-reference guide (QRGs)</li>
+                                                <li>Scope up to 2 Operations team Custom GPTs (e.g., HR)</li>
+                                                <li>Scope up to 2 Finance team Custom GPTs (e.g., data entry, AR & AP)</li>
+                                                <li>Scope "Ask-IMBeezy" GPT for internal document queries</li>
+                                                <li>Launch 60-day change management program</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 60-Day Sprint Card -->
+                                <div class="col-lg-4">
+                                    <div class="card h-100 sprint-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-center mb-3" style="color: var(--spark-dark-gray); font-weight: bold;">
+                                                60-Day Sprint
+                                            </h4>
+                                            <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
+                                                <li>Build up to 2 Operations team Custom GPTs; release QRGs</li>
+                                                <li>Build up to 2 Finance team Custom GPTs; release QRGs</li>
+                                                <li>Scope up to 2 Business Development team Custom GPTs (e.g., diligence, pitching)</li>
+                                                <li>Scope up to 2 Investment team Custom GPTs (e.g., CIM review, drafting)</li>
+                                                <li>Build internal "Ask-IMBeezy" GPT for internal document queries</li>
+                                                <li>Create AI Governance Committee and IMB Responsible AI Principles</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 90-Day Sprint Card -->
+                                <div class="col-lg-4">
+                                    <div class="card h-100 sprint-card">
+                                        <div class="card-body">
+                                            <h4 class="card-title text-center mb-3" style="color: var(--spark-dark-gray); font-weight: bold;">
+                                                90-Day Sprint
+                                            </h4>
+                                            <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
+                                                <li>Complete data repositories' categorization and tagging capabilities project</li>
+                                                <li>Build up to 2 Investment team Custom GPTs; release QRGs</li>
+                                                <li>Build up to 2 Business Development team Custom GPTs; release QRGs</li>
+                                                <li>Scope and build custom CoS Automation for CIO; release QRG</li>
+                                                <li>Integrate CoS Automation package into selected employee inboxes</li>
+                                                <li>Publish IMB Responsible AI policy</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                 </section>
-                
+
                 <!-- Page 6: Division Analysis -->
                 <section id="Division" class="section page-break">
                     <div class="section-header-custom">Division Analysis Overview</div>
-                    
+
                     <div class="content">
 
                         <table class="business-unit-table" style="font-size: 14px;">
@@ -1908,13 +2095,24 @@ html {
                         </table>
 
                         <div class="analysis-section">
-                            <h3>Key Findings Summary</h3> 
+                            <h3>Key Findings Summary</h3>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Clear AI Champion:</strong> <span class="strength-indicator">Business Development&nbsp;(GREY 63)</span> – tops every core pillar and can mentor other divisions.</li>
-                                <li><strong>Highest AI Literacy:</strong> <span class="strength-indicator">Business Development&nbsp;(69)</span> – these staff are your internal AI evangelists and experts.</li>
-                                <li><strong>Critical Execution Crisis:</strong> <span class="risk-indicator">CEO &amp; Operations Group&nbsp;(43)</span> – urgent support needed to avoid derailing AI initiatives.</li>
-                                <li><strong>Sharing Culture Gap:</strong> <span class="risk-indicator">Finance &amp; Accounting&nbsp;(27)</span> – severe collaboration barrier that threatens knowledge transfer.</li>                        
-                                <li><strong>ROI Strategy:</strong> Leverage Business Development’s strengths to coach other teams while prioritising execution improvements in CEO &amp; Operations. Address Finance &amp; Accounting’s sharing-culture shortfall to unlock organisation-wide gains.</li>
+                                <li><strong>Clear AI Champion:</strong> <span class="strength-indicator">Business
+                                        Development&nbsp;(GREY 63)</span> – tops every core pillar and can mentor other
+                                    divisions.</li>
+                                <li><strong>Highest AI Literacy:</strong> <span class="strength-indicator">Business
+                                        Development&nbsp;(69)</span> – these staff are your internal AI evangelists and
+                                    experts.</li>
+                                <li><strong>Critical Execution Crisis:</strong> <span class="risk-indicator">CEO &amp;
+                                        Operations Group&nbsp;(43)</span> – urgent support needed to avoid derailing AI
+                                    initiatives.</li>
+                                <li><strong>Sharing Culture Gap:</strong> <span class="risk-indicator">Finance &amp;
+                                        Accounting&nbsp;(27)</span> – severe collaboration barrier that threatens
+                                    knowledge transfer.</li>
+                                <li><strong>ROI Strategy:</strong> Leverage Business Development’s strengths to coach
+                                    other teams while prioritising execution improvements in CEO &amp; Operations.
+                                    Address Finance &amp; Accounting’s sharing-culture shortfall to unlock
+                                    organisation-wide gains.</li>
                             </ul>
                         </div>
                     </div>
@@ -1923,7 +2121,7 @@ html {
                 <!-- Page 7: Finance & Accounting Analysis -->
                 <section id="Finance" class="section page-break">
                     <div class="section-header-custom">Finance & Accounting</div>
-                                    
+
                     <div class="content">
                         <!-- Score Dashboard -->
                         <div class="score-grid">
@@ -1968,40 +2166,40 @@ html {
                         <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
                             <h3>Executive Summary</h3>
                             <ul style="color: #000; line-height: 1.8; font-size: 16px;">
-                                <li><strong>Positive Attitude Toward AI</strong> The team’s enthusiastic mindset signals readiness to pilot time‑saving automations, potentially shifting staff effort from manual ledger work to forward‑looking revenue analysis.</li>
-                                <li><strong>Low Sharing Culture:</strong> Entrenched silos threaten to bury hard‑won lessons, slowing firm‑wide gains, unless systematic knowledge‑exchange channels are introduced and nurtured.</li>
+                                <li><strong>Change Momentum</strong> High initiative shows openness to AI for reconciliations, manual tasks, and reporting, accelerating monthly close and paving the way for revenue-generating activities.</li>
+                                <li><strong>Knowledge Silos:</strong> Extremely low sharing habits nearly counter the gains possible with the team’s positive attitude and initiative and AI literacy score.</li>
                             </ul>
                         </div>
 
                         <!-- Core Strengths -->
                         <div class="analysis-section">
                             <h3>Core Strengths & Competitive Advantages</h3>
-                            
-                            <h4>Initiative Leadership</h4>
+
+                            <h4>Attitude & Initiative</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Self‑Starting Ethos:</strong> The team shows a clear willingness to experiment with automation and predictive tools that could accelerate monthly cycles and surface cash‑flow insights to investors and internal personnel.</li>
-                                <li><strong>Change Momentum:</strong> The team's openness to AI‑enabled workflows and natural process‑orientation positions them to champion structured governance pilots and model best practices for other units.</li>
+                                <li><strong>Automation Appetite:</strong> The team pushes to offload repetitive tasks in favor of more strategic work, positioning them to shed repetitive, low value work to work that hits the bottom line.</li>
+                                <li><strong>What’s at Risk:</strong> Understanding what is at risk by not adopting AI encourages the team to seek out solutions like automation, AI agents and more, putting them on the cutting edge of possibilities with AI.</li>
                             </ul>
 
-                            <h4>Technical Fluency</h4>
+                            <h4>AI Literacy</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Growing Literacy:</strong> Despite having a lower AI literacy score than other teams, familiarity with LLM prompts and understanding the need for LLM‑ready data equips the team to have significant impact.</li>
-                                <li><strong>ROI Focus:</strong> Acknowledgment of time limitations and a bias towards automation to fill those gaps evidences a maturity that will pay dividends and cost little going forward.</li>
+                                <li><strong>Terminology Fluency:</strong> The team understands input risk and output limitations, priming them to be good stewards of financial information and question generated outputs. </li>
+                                <li><strong>Cautious Optimism:</strong> Aware of the nuances of model training and naturally process-oriented, the team is uniquely positioned to leverage AI aggressively, but with caution.</li>
                             </ul>
                         </div>
 
                         <!-- Critical Issues -->
                         <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
                             <h3>Critical Issues & Development Areas</h3>
-                            
-                            <h4>Knowledge‑Sharing Culture</h4>
+
+                            <h4>Sharing Team Culture</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Siloed Learning:</strong> Minimal cross‑talk and no peer-coaching means useful prompt templates and workflow discoveries remain hidden in private chats, forcing each member to reinvent solutions.</li>
+                                <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers, threatening AI’s cost saving benefits.</li>
                             </ul>
 
-                            <h4>Resource and Process Constraints</h4>
+                            <h4>Company Processes & Resources</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Fragmented Tool Access:</strong> Uneven access to licenses creates bottlenecks when experiments move from concept to production or psychological safety regarding experimentation with tools is important to adoption.</li>
+                                <li><strong>Enablement Gaps:</strong> Limitations around access to in-house AI experts and prompt engineering training constrains AI adoption, blocking efficiency in finance operations.</li>
                             </ul>
                         </div>
                     </div>
@@ -2054,51 +2252,38 @@ html {
                         <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
                             <h3>Executive Summary</h3>
                             <ul style="color: #000; line-height: 1.8; font-size: 16px;">
-                                <li><strong>High Change-Readiness:</strong> A Readiness score of <strong>57</strong> and Yield potential of <strong>58</strong> show the team is well-placed to scale data-driven AI initiatives.</li>
-                                <li><strong>Strong Human Capital:</strong> AI Literacy <strong>63</strong> and Attitude & Initiative <strong>64</strong> indicate knowledgeable staff who actively pursue AI opportunities.</li>
-                                <li><strong>Governance & Process Gap:</strong> Governance <strong>52</strong> and Company Processes <strong>54</strong> remain mid-tier, signalling the need for clearer policies and workflow integration.</li>
-                            </ul>
+                                <li><strong>Strategic Alignment:</strong> The team recognizes AI’s potential to shift focus toward higher-impact work, pairing enthusiasm for automation with a strong awareness of data risks and a clear sense of urgency.</li>
+                                <li><strong>Knowledge-sharing Inertia:</strong> The team rarely keeps a shared log of AI successes and failures or swaps tool tips with peers, threatening productivity by forcing each member to discover effective workflows on their own.</li>
                         </div>
 
                         <!-- Core Strengths -->
                         <div class="analysis-section">
-                            <h3>Core Strengths & Competitive Advantages</h3>
-                            
-                            <h4>Change Leadership Excellence</h4>
+                            <h3>Core Strengths</h3>
+
+                            <h4>Attitude & Initiative & AI Literacy</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Readiness Leadership (57):</strong> Demonstrates strong learning culture and adaptability to new AI-driven workflows.</li>
-                                <li><strong>Robust AI Literacy (63):</strong> Enables sophisticated use of analytics and modelling in investment decisions.</li>
+                                <li><strong>Strategic Pull:</strong> Teams know where guidance lives and how to apply it enabling cleaner compliance paths for vendor tools and data rooms. </li>
+                                <li><strong>Model Awareness:</strong> The team shows strong fluency in AI limitations and safeguards, recognizing both the risks of hallucination and the value of fine-tuning models to reflect company standards and move at scale. </li>
                             </ul>
 
-                            <h4>Strategic Capabilities</h4>
+                            <h4>Readiness & Yield Potential</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Proactive Mindset (Attitude & Initiative 64):</strong> Team members actively experiment and self-educate on emerging AI tools.</li>
-                                <li><strong>Yield Recognition (58):</strong> Clear grasp of how AI can drive performance improvements across the investment cycle.</li>
-                            </ul>
-
-                            <h4>Risk Management Expertise</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Due-Diligence Discipline:</strong> Existing analytical rigour translates to careful AI-vendor and model evaluation.</li>
-                                <li><strong>Framework Development:</strong> Familiarity with investment frameworks supports creation of structured AI governance documents.</li>
+                                <li><strong>Change Readiness:</strong> The team combines a clear sense of AI’s strategic value with strong peer collaboration and structured transition habits, creating fertile ground for scaling high-impact adoption. </li>
+                                <li><strong>Efficiency Drive:</strong> The team embraces AI to offload tedious work and exercises data caution before inputting sensitive information, accelerating report preparation and freeing capacity for higher-value analysis.</li>
                             </ul>
                         </div>
 
                         <!-- Critical Issues -->
                         <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
                             <h3>Critical Issues & Development Areas<h3>
-
-                            <h4>Governance Crisis (Score: 52)</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Policy Framework Gap:</strong> Formal AI governance and oversight structures are still emerging.</li>
-                                <li><strong>Compliance Exposure:</strong> Clear accountability and vendor-monitoring protocols remain incomplete.</li>
-                            </ul>
-
-                            <h4>Implementation & Collaboration Gaps</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Execution Constraints (55):</strong> Limited tool access and workflow integration slow practical deployment.</li>
-                                <li><strong>Sharing Culture (47):</strong> Moderate knowledge-sharing; targeted peer-learning programmes could accelerate capability transfer.</li>
-                                <li><strong>Process Maturity (Company Processes 54):</strong> Standardised AI procedures and training paths need refinement for consistent scaling.</li>
-                            </ul>
+                                <h4>Governance</h4>
+                                <ul style="color: #555; line-height: 1.8;">
+                                    <li><strong>Risk Decentralization:</strong> The team makes AI-risk decisions in isolation, lack enforced vendor fairness/transparency standards, and adopt unvetted free tools, threatening compliance and exposing the firm to legal, ethical, and remediation costs.</li>
+                                </ul>
+                                <h4>Sharing Team Culture</h4>
+                                <ul style="color: #555; line-height: 1.8;">
+                                    <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers, significantly limiting AI’s cost saving benefits.</li>
+                                </ul>
                         </div>
 
                     </div>
@@ -2107,7 +2292,7 @@ html {
                 <!-- Business Development Analysis-->
                 <section id="BusinessDevelopment" class="section page-break">
                     <div class="section-header-custom">Business Development</div>
-                    
+
                     <div class="content">
                         <!-- Score Dashboard -->
                         <div class="score-grid">
@@ -2152,57 +2337,40 @@ html {
                         <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
                             <h3>Executive Summary</h3>
                             <ul style="color: #000; line-height: 1.8; font-size: 16px;">
-                                <li><strong>Enterprise-Wide AI Champion:</strong> Highest GREY Score of <strong>63</strong> with balanced strength across all four pillars.</li>
-                                <li><strong>Human-Capital Powerhouse:</strong> Top Attitude & Initiative (<strong>74</strong>) and AI Literacy (<strong>69</strong>) fuel rapid innovation and evangelism.</li>
-                                <li><strong>Execution to Impact:</strong> Execution <strong>65</strong> and Yield <strong>64</strong> show the team converts ideas into measurable business value.</li>
-                                <li><strong>Process Maturity Watch-point:</strong> Company Processes at <strong>56</strong> lag other scores—scaling will stall without stronger tooling and workflows.</li>
+                                <li><strong>Proactive Ownership:</strong> Elevated initiative indicates teams act on AI opportunities without waiting for direction, keeping pipeline motion strong.</li>
+                                <li><strong>Process Inconsistency:</strong> Uneven or absent resources constrain repeatability of wins across pursuits, threatening the ability to leverage AI to increase conversion rates.</li>
                             </ul>
                         </div>
 
                         <!-- Core Strengths -->
                         <div class="analysis-section">
-                            <h3>Core Strengths & Competitive Advantages</h3>
-                            
-                            <h4>Technical Excellence</h4>
+                            <h3>Core Strengths</h3>
+
+                            <h4>Attitude & Initiative</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>AI Literacy Leadership (69):</strong> Deep technical knowledge enables sophisticated use of generative-AI and analytics.</li>
-                                <li><strong>Execution Proficiency (65):</strong> Proven ability to prototype and deploy AI solutions quickly.</li>
+                                <li><strong>Self-starting Culture:</strong>  Individuals volunteer new AI workflows in live pursuits and follow through, boosting daily productivity and enabling more strategic work.</li>
+                                <li><strong>Proactive Learning:</strong> Teams independently acquire skills to test prompts and refine outputs, enabling higher reply rates and win probability.</li>
                             </ul>
 
-                            <h4>Organizational Readiness</h4>
+                            <h4>AI Literacy</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Change Agility (Readiness 61):</strong> Culture embraces experimentation and continuous learning.</li>
-                                <li><strong>Proactive Mindset (Attitude & Initiative 74):</strong> Team members self-start and champion new AI opportunities.</li>
-                                <li><strong>Sharing Culture (58):</strong> Knowledge flows well, accelerating cross-team adoption.</li>
-                            </ul>
-
-                            <h4>Business Impact Potential</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Client-Facing Innovation:</strong> Customer engagement experience positions the team to monetise AI-enhanced offerings.</li>
-                                <li><strong>Revenue Growth Engine:</strong> Direct link to pipeline creation amplifies the ROI of successful AI initiatives.</li>
+                                <li><strong>Conceptual Clarity:</strong> A strong grasp of AI strengths/limits reduces misapplication risk, enabling and encouraging continued use of AI to drive returns.</li>
+                                <li><strong>Tool Fluency:</strong> The team fluently uses a range of AI tools, boosting throughput by compressing tasks like deal sourcing, email personalization, and call preparation.</li>
                             </ul>
                         </div>
 
                         <!-- Critical Issues -->
                         <div class="analysis-section" style="background:#fff;border:2px solid var(--spark-gray);">
-                            <h3>Critical Issues &amp; Development Areas</h3>
+                            <h3>Critical Issues & Development Areas</h3>
 
-                            <h4>Process &amp; Resource Maturity (Score: 56)</h4>
+                            <h4>Company Processes & Resources</h4>
                             <ul style="color:#555;line-height:1.8;">
-                                <li><strong>Standardisation Needed:</strong> Inconsistent access to enterprise AI platforms and tooling may hinder team-wide scalability.</li>
-                                <li><strong>Formal Workflows:</strong> Limited documented procedures could slow onboarding of new AI projects and partners.</li>
+                                <li><strong>Enablement Gaps:</strong> Limitations around access to in-house AI experts, prompt engineering training, LLM-ready data, and AI tools constrains AI adoption, blocking efficiency in high-leverage stages.</li>
                             </ul>
 
-                            <h4>Governance &amp; Compliance Reinforcement (Score: 61)</h4>
+                            <h4>Sharing Team Culture</h4>
                             <ul style="color:#555;line-height:1.8;">
-                                <li><strong>Policy Evolution:</strong> Governance is sound but requires additional controls for model risk management and data privacy as deployments expand.</li>
-                                <li><strong>Cross-Division Alignment:</strong> Ensure Business Development’s fast-moving initiatives integrate with enterprise-wide AI oversight structures.</li>
-                            </ul>
-
-                            <h4>Knowledge-Sharing Optimisation (Score: 58)</h4>
-                            <ul style="color:#555;line-height:1.8;">
-                                <li><strong>Best-Practice Capture:</strong> High collaboration culture should be formalised into playbooks to accelerate learning across divisions.</li>
-                                <li><strong>Mentorship Programme:</strong> Leverage team strengths to coach Finance &amp; Accounting and Investments on advanced AI tactics.</li>
+                                <li><strong>Limited Knowledge Exchange:</strong> Wins and failures with AI remain siloed, threatening top-of-funnel velocity, by forcing team members to learn AI’s evolving capabilities on their own.</li>
                             </ul>
                         </div>
                     </div>
@@ -2253,62 +2421,48 @@ html {
 
                         <!-- Executive Summary -->
                         <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
-                            <h3>Executive Summary <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) 3b4c5d6e-7f8a-9b0c-1d2e-3f4a5b6c7d8e</span></h3>
+                            <h3>Executive Summary</h3>
                             <ul style="color: #000; line-height: 1.8; font-size: 16px;">
-                                <li><strong>Execution Emergency:</strong> Critical execution breakdown (43) threatens all AI initiatives and requires immediate Business Development intervention</li>
-                                <li><strong>Strong AI Vision:</strong> Solid Yield recognition (59) and AI Literacy (57) demonstrate clear understanding of AI's transformative potential</li>
-                                <li><strong>CEO Leadership Opportunity:</strong> Executive involvement essential for driving enterprise-wide AI transformation and crisis resolution</li>
+                                <li><strong>Solid AI Fluency:</strong> Broad, dependable literacy positions the org to scale enablement quickly, creating leaner operating rhythms that hit the bottom line.</li>
+                                <li><strong>Isolated Wins:</strong> Successes seldom circulate across team members, threatening enterprise scale and blocking AI’s ability to elevate team performance at scale.</li>
                             </ul>
                         </div>
 
                         <!-- Core Strengths -->
                         <div class="analysis-section">
-                            <h3>Core Strengths & Competitive Advantages <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) a1b2c3d4-e5f6-7890-1234-56789abcdef0</span></h3>
-                            
-                            <h4>Strategic Vision Excellence</h4>
+                            <h3>Core Strengths</h3>
+
+                            <h4>AI Literacy</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Yield Recognition (59):</strong> Clear vision of AI's business transformation potential - understanding drives enterprise strategy</li>
-                                <li><strong>AI Literacy Leadership (57):</strong> Strong technical understanding provides solid foundation for advanced implementation</li>
+                                <li><strong>Common Vocabulary:</strong> Shared terminology eases cross-functional alignment, enabling faster critical decision cycles.</li>
+                                <li><strong>Confidence with Data:</strong> The team understands risks of hallucination and data leakage to LLMs, enabling critical protection of proprietary data and the integrity of outputs.</li>
                             </ul>
 
-                            <h4>Leadership Capabilities</h4>
+                            <h4>Attitude & Initiative</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Executive Authority:</strong> CEO leadership critical for driving enterprise-wide AI adoption and resource allocation</li>
-                                <li><strong>Strategic Mindset (58):</strong> Positive attitude toward AI transformation with willingness to lead change</li>
-                            </ul>
-
-                            <h4>Transformation Potential</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Operational Impact:</strong> Direct influence on enterprise efficiency and AI-driven process optimization</li>
-                                <li><strong>Cross-Functional Leadership:</strong> Unique position to drive AI adoption across all business divisions</li>
+                                <li><strong>Action Orientation:</strong> The team generally doesn’t wait for instructions on how to use new tools; it acts, sharpening resource decisions by testing quickly and often.</li>
+                                <li><strong>Strategic Appetite:</strong> The team sees clear opportunities for AI to offload low-value tasks and elevate their roles, paving the way for more strategic contributions to the firm.</li>
                             </ul>
                         </div>
 
                         <!-- Critical Issues -->
                         <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
-                            <h3>Critical Issues & Development Areas <span style="font-size: 14px; color: #ff9b9b;">For Review (Details not yet changed) f0e1d2c3-b4a5-9687-7c6b-5a4938271605</span></h3>
-                            
-                            <h4>Execution Crisis (Score: 43)</h4>
-                            <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Implementation Breakdown:</strong> Severe inability to convert AI concepts into working solutions threatens all initiatives</li>
-                                <li><strong>Tool Access Barriers:</strong> Limited access to enterprise AI platforms and systematic training programs</li>
-                            </ul>
+                            <h3>Critical Issues & Development Areas</h3>
 
-                            <h4>Infrastructure & Collaboration Gaps</h4>
+                            <h4>Execution</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Sharing Culture (62):</strong> Good knowledge sharing capabilities across teams</li>
-                                <li><strong>Company Processes (36):</strong> Poor access to AI resources and organizational support systems</li>
+                                <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers, doubling the time to collectively increase AI literacy.</li>
                             </ul>
                         </div>
                     </div>
                 </section>
-        
+
                 <!-- Page 5: Evidence & Documentation -->
                 <section id="evidence" class="section page-break">
                     <div class="section-header-custom">Evidence & Documentation</div>
-                    
+
                     <p class="mb-4">Survey statistics, key quotes, themes supporting the assessment findings.</p>
-                    
+
                     <div class="row g-4">
                         <div class="col-md-6">
                             <div class="highlight-section-custom">
@@ -2328,40 +2482,64 @@ html {
                                 <ul>
                                     <li>Company-wide excitement about AI’s productivity potential</li>
                                     <li>Inbox and task overload spark demand for automation and AI agents</li>
-                                    <li>Teams seek practical coaching—more prompt training, office hours, and live help-desk support</li>
-                                    <li>Cleaner, structured data map and consistent processes viewed as key to scaling AI wins</li>
+                                    <li>Teams seek practical coaching—more prompt training, office hours, and live
+                                        help-desk support</li>
+                                    <li>Cleaner, structured data map and consistent processes viewed as key to scaling
+                                        AI wins</li>
                                     <li>Desire for quick-win pilots (14-90 days) to demonstrate value fast</li>
                                 </ul>
                             </div>
                         </div>
+
+                        <div class="container">
+                            <!-- Horizontal Testimonial Cards -->
+                            <h4 class="text-center mt-5 mb-4" style="color: var(--spark-dark-gray);">💬 Other Leadership Insights</h4>
+
+                            <!-- Highlight Testimonial -->
+                             <div class="testimonial-card">
+                                 <p class="highlight-quote">
+                                         “I really want an AI chief-of-staff—something better than an EA—to sort email, build my to-do list and
+                                         manage the calendar.”
+                                     </p>
+                                     <p class="highlight-role text-center">IMB Partners</p>
+                                 </div>
+                             </div>
                         
-                        <div class="col-12">
-                            <div class="highlight-section-custom">
-                                <h4>💬 Key Quotes from Leadership</h4>
+
+                            <div class="testimonial-row d-flex justify-content-center">
+                                <!-- Card 1 -->
+                                <div class="testimonial-card">
+                                    <p class="testimonial-text">
+                                        “We get lost in Slack—can an assistant pull the action items out and drop them straight into Asana for
+                                        me?”
+                                    </p>
+                                    <p class="testimonial-role">IMB Partners</p>
+                                </div>
                         
-                                <div class="quote-container" style="display: flex; flex-direction: column; gap: 20px;">
-                                    <blockquote class="quote-block">
-                                        <p>“We get lost in Slack—can an assistant pull the action items out and drop them straight into Asana
-                                            for me?”</p>
-                                    </blockquote>
+                                <!-- Card 2 -->
+                                <div class="testimonial-card">
+                                    <p class="testimonial-text">
+                                        “It’s almost like I need a personal trainer … I need the handheld model a little bit.”
+                                    </p>
+                                    <p class="testimonial-role">IMB Partners</p>
+                                </div>
                         
-                                    <blockquote class="quote-block">
-                                        <p>“I really want an AI chief-of-staff—something better than an EA—to sort email, build my to-do list
-                                            and manage the calendar.”</p>
-                                    </blockquote>
+                                <!-- Card 3 -->
+                                <div class="testimonial-card">
+                                    <p class="testimonial-text">
+                                        “[We are] literally recording thousands of transactions in Excel… massive spreadsheets…—there’s got to
+                                        be a better way.”
+                                    </p>
+                                    <p class="testimonial-role">IMB Partners</p>
+                                </div>
                         
-                                    <blockquote class="quote-block">
-                                        <p>“It’s almost like I need a personal trainer … I need the handheld model a little bit.”</p>
-                                    </blockquote>
-                        
-                                    <blockquote class="quote-block">
-                                        <p>“[We are] literally recording thousands of transactions in Excel… massive spreadsheets…—there’s got
-                                            to be a better way; just tell me where we can automate.”</p>
-                                    </blockquote>
-                        
-                                    <blockquote class="quote-block">
-                                        <p>“Connecting all these different data sources is hugely painful and leads to errors.”</p>
-                                    </blockquote>
+                                <!-- Card 4 -->
+                                <div class="testimonial-card">
+                                    <p class="testimonial-text">
+                                        “Connecting all these different data sources is hugely painful and leads to errors. AI could fix this
+                                        overnight.”
+                                    </p>
+                                    <p class="testimonial-role">IMB Partners</p>
                                 </div>
                             </div>
                         </div>
@@ -2369,15 +2547,15 @@ html {
                 </section>
             </main>
 
-            
-        <!-- PDF Generation Loading Overlay -->
-        <div class="pdf-overlay" id="pdfOverlay">
-            <div class="pdf-loader">
-                <div class="pdf-loader-spinner"></div>
-                <h5>Generating PDF...</h5>
-                <p class="text-muted mb-0">This may take a few moments</p>
+
+            <!-- PDF Generation Loading Overlay -->
+            <div class="pdf-overlay" id="pdfOverlay">
+                <div class="pdf-loader">
+                    <div class="pdf-loader-spinner"></div>
+                    <h5>Generating PDF...</h5>
+                    <p class="text-muted mb-0">This may take a few moments</p>
+                </div>
             </div>
-        </div>
         </div>
     </div>
 
@@ -2978,4 +3156,8 @@ async function generateSimplePDF() {
 }
 </script>
 </body>
+
 </html>
+
+<!--to-do
+card for quotes
