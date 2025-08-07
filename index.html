@@ -1427,7 +1427,7 @@ html {
     <!-- Welcome Page (hidden initially) -->
     <div class="welcome-page hidden" id="welcomePage">
         <!-- Header -->
-        <header class="header-custom sticky-top py-3 px-4">
+        <header class="header-custom sticky-top py-3 px-4" id="headerWrapper">
             <div class="header-content">
                 <div class="header-left">
                     <h1 class="h3 mb-1 fw-bold">GREY Score™ AI Maturity Assessment</h1>
@@ -3101,12 +3101,29 @@ html {
                 console.error('Error generating PDF:', error);
                 alert('There was an error generating the PDF. Please try again.');
             } finally {
-                // Restore original state
-                document.getElementById('sidebarWrapper').style.display = '';
-                document.getElementById('sidebarToggle').style.display = '';
-                document.getElementById('mainContent').style.marginLeft = '';
-                document.getElementById('pdfOverlay').classList.remove('active');
-                document.getElementById('pdfButton').disabled = false;
+                    // Restore original layout
+                const sidebarWrapper = document.getElementById('sidebarWrapper');
+                const sidebarToggle = document.getElementById('sidebarToggle');
+                const mainContent = document.getElementById('mainContent');
+                const pdfOverlay = document.getElementById('pdfOverlay');
+                const pdfButton = document.querySelector('.pdf-button');
+                const logoutButton = document.querySelector('.logout-btn');
+                const headerWrapper = document.querySelector('.header-custom'); // ✅ corrected
+
+                if (sidebarWrapper) sidebarWrapper.style.display = '';
+                if (sidebarToggle) sidebarToggle.style.display = '';
+                if (mainContent) {
+                    mainContent.style.marginLeft = '';
+                    mainContent.style.width = '';
+                }
+                if (headerWrapper) headerWrapper.style.display = '';
+                if (pdfButton) {
+                    pdfButton.style.display = '';
+                    pdfButton.disabled = false;
+                }
+                if (logoutButton) logoutButton.style.display = '';
+
+                if (pdfOverlay) pdfOverlay.classList.remove('active');
             }
         }
 
