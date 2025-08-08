@@ -1,0 +1,146 @@
+@media (max-width: 480px) {
+    .button-text {
+        display: none;
+    }
+    
+    .pdf-button,
+    .logout-btn {
+        padding: 0.5rem;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .header-custom {
+        padding: 0.75rem 1rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .header-left h1 {
+        font-size: 1.25rem;
+    }
+    
+    .header-right {
+        width: 100%;
+        justify-content: flex-start;
+    }
+    
+    .pdf-button,
+    .logout-btn {
+        padding: 0.4rem 0.75rem;
+        font-size: 0.8rem;
+    }
+    
+    .sidebar-wrapper {
+        width: 250px;
+    }
+    
+    .main-content-wrapper {
+        margin-left: 0;
+    }
+    
+    .sidebar-toggle {
+        display: flex !important;
+        top: 130px;
+    }
+
+    .pillars-grid-grey {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 25px;
+        margin-top: 20px;
+        grid-auto-rows: minmax(180px, auto);
+    }
+
+    .stepped-scale {
+        transform: none;
+    }
+
+    .section {
+        padding: 1rem;
+    }
+
+    .page {
+        padding: 20px;
+    }
+
+    .section-header-custom {
+        margin: -1rem -1rem 2rem -1rem;
+    }
+
+    .section-divider {
+        margin: -20px -20px 20px -20px;
+        font-size: 1rem;
+        padding: 1rem;
+    }
+
+    .score-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    /* Hide button text on very small screens */
+    .button-text {
+        display: inline;
+    }
+
+    .pillars-header-row,
+    .pillars-content-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pillar-content-item {
+        min-height: auto;
+    }
+}
+
+/* Print styles */
+@media print {
+    body {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+    }
+    
+    .no-print,
+    .sidebar-wrapper,
+    .sidebar-toggle,
+    .nav-buttons {
+        display: none !important;
+    }
+    
+    .main-content-wrapper {
+        margin-left: 0 !important;
+    }
+    
+    .section,
+    .page {
+        page-break-inside: avoid;
+    }
+    
+    .section {
+        page-break-after: always;
+        min-height: auto !important;
+    }
+    
+    .section:last-child {
+        page-break-after: auto;
+    }
+    
+    /* Ensure background colors print */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    .pillars-header-row,
+    .pillars-content-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
