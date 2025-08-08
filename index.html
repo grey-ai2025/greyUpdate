@@ -757,7 +757,7 @@ button:hover {
 /* Ensure the 14-day quick wins grid stays as 6 columns */
 .pillars-grid-quickwins {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 25px;
     margin-top: 20px;
     grid-auto-rows: minmax(180px, auto);
@@ -1262,6 +1262,118 @@ html {
     margin: 0 10px;
     user-select: none;
   }
+
+  .main-content {
+            display: grid;
+            grid-template-columns: 1fr auto 2fr;
+            gap: 60px;
+            align-items: center;
+            margin: 60px 0;
+        }
+        
+        .problems-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .section-header {
+            background-color: #5a5a5a;
+            color: white;
+            padding: 15px 20px;
+            margin: -30px -30px 25px -30px;
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.5px;
+            text-align: center;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .problem {
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-left: 4px solid #7fdbda;
+            border-radius: 0 6px 6px 0;
+        }
+        
+        .problem:last-child {
+            margin-bottom: 0;
+        }
+        
+        .problem-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .problem-description {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        .connector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: #7fdbda;
+            font-weight: bold;
+        }
+        
+        .solutions-section {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .solutions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+        
+        .solution {
+            text-align: center;
+        }
+        
+        .solution-circle {
+            width: 120px;
+            height: 120px;
+            border: 2px solid #7fdbda;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            background-color: #ffffff;
+            transition: all 0.2s ease;
+            padding: 10px;
+        }
+        
+        .solution:hover .solution-circle {
+            background-color: #7fdbda;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(127, 219, 218, 0.3);
+        }
+        
+        .solution-title {
+            font-size: 12px;
+            font-weight: 600;
+            line-height: 1.2;
+            color: #5a5a5a;
+            transition: color 0.2s ease;
+            text-align: center;
+        }
+        
+        .solution:hover .solution-title {
+            color: white;
+        }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -1827,8 +1939,7 @@ html {
                                         </div>
                                         <div class="pillar-description">
                                             <ul>
-                                                <li>Complete Chief-of-Staff (CoS) Automation; release quick-reference
-                                                    guide (QRGs)</li>
+                                                <li>Launch Chief-of-Staff (CoS) Automation</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1852,8 +1963,7 @@ html {
                                         </div>
                                         <div class="pillar-description">
                                             <ul>
-                                                <li>Enable and connect Read.ai (or similar) STT (speech to text)
-                                                    technology</li>
+                                                <li>Enable firm-wide speech to text (STT)/transcript provider</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1865,8 +1975,7 @@ html {
                                         </div>
                                         <div class="pillar-description">
                                             <ul>
-                                                <li>Book four weekly AI Executive Coaching sessions for COO, CIO and CFO
-                                                </li>
+                                                <li>Book four weekly AI Executive Coaching sessions for C-Suite</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1878,20 +1987,7 @@ html {
                                         </div>
                                         <div class="pillar-description">
                                             <ul>
-                                                <li>Scope up to 4 data repositories' categorization and tagging
-                                                    capabilities project</li>
-                                            </ul>
-                                        </div>
-                                    </div>
-
-                                    <!-- Quick Win 6 -->
-                                    <div class="pillar-card">
-                                        <div class="pillar-letter-circle-extra">
-                                            <div class="pillar-letter">6</div>
-                                        </div>
-                                        <div class="pillar-description">
-                                            <ul>
-                                                <li>Create and deploy company data taxonomy reference guide</li>
+                                                <li>Launch Slack channel #ai-test-drive (e.g., experimentation discussions)</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1905,7 +2001,7 @@ html {
                             <p style="color: var(--spark-dark-gray)" class="text-center">The following recommendations are designed to deliver quick wins and
                                 continuous improvement, ensuring a sustainable path towards a fully AI-enabled organization. These strategies
                                 are rooted in our GREY Score research, addressing identified weaknesses and prioritizing practical, low-burden
-                                implementations that consider IMB Partners' specific needs and existing challenges.</p>
+                                implementations that consider specific needs and existing challenges.</p>
                         
                             <!-- Sprint Cards Container -->
                             <div class="row g-3 mt-3">
@@ -1917,12 +2013,11 @@ html {
                                                 30-Day Sprint
                                             </h4>
                                             <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
-                                                <li>Begin data repositories' categorization and tagging capabilities project</li>
-                                                <li>Scope and build custom CoS Automation for COO, CFO, CEO; release quick-reference guide (QRGs)</li>
-                                                <li>Scope up to 2 Operations team Custom GPTs (e.g., HR)</li>
-                                                <li>Scope up to 2 Finance team Custom GPTs (e.g., data entry, AR & AP)</li>
-                                                <li>Scope "Ask-IMBeezy" GPT for internal document queries</li>
-                                                <li>Launch 60-day change management program</li>
+                                                <li>Launch The Data Project (e.g., data mapping)</li>
+                                                <li>Launch custom CoS Automations for CEO, COO</li>
+                                                <li>Launch additional AI Office Hours</li>
+                                                <li>Create AI Governance Committee</li>
+                                                <li>Launch Slack channel #ai-showcase (e.g., weekly “show and tell”)</li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1936,12 +2031,11 @@ html {
                                                 60-Day Sprint
                                             </h4>
                                             <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
-                                                <li>Build up to 2 Operations team Custom GPTs; release QRGs</li>
-                                                <li>Build up to 2 Finance team Custom GPTs; release QRGs</li>
-                                                <li>Scope up to 2 Business Development team Custom GPTs (e.g., diligence, pitching)</li>
-                                                <li>Scope up to 2 Investment team Custom GPTs (e.g., CIM review, drafting)</li>
-                                                <li>Build internal "Ask-IMBeezy" GPT for internal document queries</li>
-                                                <li>Create AI Governance Committee and IMB Responsible AI Principles</li>
+                                                <li>Launch "Ask-IMBeezy" GPT (e.g., internal document queries)</li>
+                                                <li>Launch 2 Custom Operations GPTs (e.g., HR, ESG, marketing)</li>
+                                                <li>Launch 2 Custom Finance GPTs (e.g., data entry, AR & AP)</li>
+                                                <li>Launch Spark Rewards Program</li>
+                                                <li>Publish IMB Responsible AI Principles </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -1955,11 +2049,10 @@ html {
                                                 90-Day Sprint
                                             </h4>
                                             <ul style="color: var(--spark-dark-gray); line-height: 1.8; font-size: 14px; padding-left: 20px;">
-                                                <li>Complete data repositories' categorization and tagging capabilities project</li>
-                                                <li>Build up to 2 Investment team Custom GPTs; release QRGs</li>
-                                                <li>Build up to 2 Business Development team Custom GPTs; release QRGs</li>
-                                                <li>Scope and build custom CoS Automation for CIO; release QRG</li>
-                                                <li>Integrate CoS Automation package into selected employee inboxes</li>
+                                                <li>Launch custom CoS Automations for CFO, CIO</li>
+                                                <li>Launch 2 Custom Investment GPTs (e.g., CIM review, drafting)</li>
+                                                <li>Launch 2 Custom Business Development GPTs (e.g., diligence, pitching)</li>
+                                                <li>Launch Micro-Training Pathways</li>
                                                 <li>Publish IMB Responsible AI policy</li>
                                             </ul>
                                         </div>
@@ -2168,6 +2261,99 @@ html {
                             </ul>
                         </div>
                     </div>
+
+                    <div class="main-content">
+                        <!-- Problems Section -->
+                        <div class="problems-section">
+                            <div class="section-header">CRITICAL ISSUES</div>
+                    
+                            <div class="problem">
+                                <div class="problem-title">Reflection Discipline</div>
+                                <div class="problem-description">
+                                    The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective
+                                    practices across peers, threatening AI's cost saving benefits.
+                                </div>
+                            </div>
+                    
+                            <div class="problem">
+                                <div class="problem-title">Enablement Gaps</div>
+                                <div class="problem-description">
+                                    Limitations around access to in-house AI experts and prompt engineering training constrains AI adoption,
+                                    blocking efficiency in finance operations.
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Connector -->
+                        <div class="connector">→</div>
+                    
+                        <!-- Solutions Section -->
+                        <div class="solutions-section">
+                            <div class="section-header">SPRINT SOLUTIONS</div>
+                    
+                            <div class="solutions-grid">
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Spark Rewards Program</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">The Data Project</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-test-drive Channel</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-showcase Channel</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Micro-Training Pathways</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">IMB Responsible AI Principles</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">AI Office Hours</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">AI Executive Coaching</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Custom CFO CoS Automation</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Custom Finance GPTs</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Page 6: Investments Analysis -->
@@ -2250,7 +2436,76 @@ html {
                                     <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers, significantly limiting AI’s transformative benefits.</li>
                                 </ul>
                         </div>
+                    </div>
 
+                    <div class="main-content">
+
+                        <!-- Problems Section -->
+                        <div class="problems-section">
+                            <div class="section-header">CRITICAL ISSUES</div>
+
+                            <div class="problem">
+                                <div class="problem-title">Risk Decentralization</div>
+                                <div class="problem-description">
+                                    The team makes AI-risk decisions in isolation, lacks enforced vendor fairness/transparency standards, and adopts
+                                    unvetted tools, potentially exposing the firm to legal and regulatory issues.
+                                </div>
+                            </div>
+
+                            <div class="problem">
+                                <div class="problem-title">Reflection Discipline</div>
+                                <div class="problem-description">
+                                    The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across
+                                    peers, significantly limiting AI's transformative benefits.
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Connector -->
+                        <div class="connector">→</div>
+
+                        <!-- Solutions Section -->
+                        <div class="solutions-section">
+                            <div class="section-header">SPRINT SOLUTIONS</div>
+                            
+                            <div class="solutions-grid">
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">IMB Responsible AI Principles</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">The Data Project</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Spark Rewards Program</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Custom Investments GPTs</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-test-drive Channel</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-showcase Channel</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </section>
 
@@ -2339,6 +2594,81 @@ html {
                             </ul>
                         </div>
                     </div>
+
+                    <div class="main-content">
+                        <!-- Problems Section -->
+                        <div class="problems-section">
+                            <div class="section-header">CRITICAL ISSUES</div>
+                    
+                            <div class="problem">
+                                <div class="problem-title">Enablement gaps</div>
+                                <div class="problem-description">
+                                    Limitations around access to in-house AI experts, prompt engineering training, LLM-ready data, and AI tools
+                                    constrains AI adoption, blocking efficiency in high-leverage stages.
+                                </div>
+                            </div>
+                    
+                            <div class="problem">
+                                <div class="problem-title">Limited knowledge exchange</div>
+                                <div class="problem-description">
+                                    Wins and failures with AI remain siloed, threatening top-of-funnel velocity, by forcing team members to learn AI’s
+                                    evolving capabilities on their own.
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Connector -->
+                        <div class="connector">→</div>
+                    
+                        <!-- Solutions Section -->
+                        <div class="solutions-section">
+                            <div class="section-header">SPRINT SOLUTIONS</div>
+                    
+                            <div class="solutions-grid">
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">AI Office Hours</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Micro-Training Pathways</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">The Data Project</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Custom BD GPTs</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Spark Rewards Program</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-test-drive Channel</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-showcase Channel</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
 
                 <!-- Page 8: CEO & Operations Analysis -->
@@ -2388,36 +2718,121 @@ html {
                         <div class="analysis-section" style="background: #f0fdfc; border: 2px solid var(--spark-cyan);">
                             <h3>Executive Summary</h3>
                             <ul style="color: #000; line-height: 1.8; font-size: 16px;">
-                                <li><strong>Solid AI Fluency:</strong> Broad, dependable literacy positions the org to scale enablement quickly, creating leaner operating rhythms that hit the bottom line.</li>
-                                <li><strong>Isolated Wins:</strong> Successes seldom circulate across team members, threatening enterprise scale and blocking AI’s ability to elevate team performance at scale.</li>
+                                <li><strong>Solid AI Fluency:</strong> Broad, dependable literacy positions the org to scale enablement quickly,
+                                    creating leaner operating rhythms that hit the bottom line.</li>
+                                <li><strong>Isolated Wins:</strong> Successes seldom circulate across team members, threatening enterprise scale
+                                    and blocking AI’s ability to elevate team performance at scale.</li>
                             </ul>
                         </div>
-
+                        
                         <!-- Core Strengths -->
                         <div class="analysis-section">
                             <h3>Core Strengths</h3>
-
+                        
                             <h4>AI Literacy</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Common Vocabulary:</strong> Shared terminology eases cross-functional alignment, enabling faster critical decision cycles.</li>
-                                <li><strong>Confidence with Data:</strong> The team understands risks of hallucination and data leakage to LLMs, enabling critical protection of proprietary data and the integrity of outputs.</li>
+                                <li><strong>Common Vocabulary:</strong> Shared terminology eases cross-functional alignment, enabling faster
+                                    critical decision cycles.</li>
+                                <li><strong>Confidence with Data:</strong> The team understands risks of hallucination and data leakage to LLMs,
+                                    enabling critical protection of proprietary data and the integrity of outputs.</li>
                             </ul>
-
+                        
                             <h4>Attitude & Initiative</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Action Orientation:</strong> The team generally doesn’t wait for instructions on how to use new tools; it acts, sharpening resource decisions by testing quickly and often.</li>
-                                <li><strong>Strategic Appetite:</strong> The team sees clear opportunities for AI to offload low-value tasks and elevate their roles, paving the way for more strategic contributions to the firm.</li>
+                                <li><strong>Action Orientation:</strong> The team generally doesn’t wait for instructions on how to use new
+                                    tools; it acts, sharpening resource decisions by testing quickly and often.</li>
+                                <li><strong>Strategic Appetite:</strong> The team sees clear opportunities for AI to offload low-value tasks and
+                                    elevate their roles, paving the way for more strategic contributions to the firm.</li>
                             </ul>
                         </div>
-
+                        
                         <!-- Critical Issues -->
                         <div class="analysis-section" style="background: #fff; border: 2px solid var(--spark-gray);">
                             <h3>Critical Issues & Development Areas</h3>
-
+                        
                             <h4>Execution</h4>
                             <ul style="color: #555; line-height: 1.8;">
-                                <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers, doubling the time to collectively increase AI literacy.</li>
+                                <li><strong>Reflection Discipline:</strong> The team rarely documents or shares where AI succeeds or fails,
+                                    slowing the spread of effective practices across peers, doubling the time to collectively increase AI
+                                    literacy.</li>
+                                <li><strong>Resource & Training Barriers:</strong> Limited budget access, skepticism about new tools’ benefits,
+                                    and scarce AI training constrain the team’s ability to integrate and scale high-impact solutions.</li>
                             </ul>
+                        </div>
+                    </div>
+
+                    <div class="main-content">
+                        <!-- Problems Section -->
+                        <div class="problems-section">
+                            <div class="section-header">CRITICAL ISSUES</div>
+                    
+                            <div class="problem">
+                                <div class="problem-title"> Reflection discipline </div>
+                                <div class="problem-description">
+                                    The team rarely documents or shares where AI succeeds or fails, slowing the spread of effective practices across peers,
+                                    doubling the time to collectively increase AI literacy.
+                                </div>
+                            </div>
+                    
+                            <div class="problem">
+                                <div class="problem-title">Resource & Training Barriers</div>
+                                <div class="problem-description">
+                                    Limited budget access, skepticism about new tools’ benefits, and scarce AI training constrain the team’s ability to
+                                    integrate and scale high-impact solutions.
+                                </div>
+                            </div>
+                        </div>
+                    
+                        <!-- Connector -->
+                        <div class="connector">→</div>
+                    
+                        <!-- Solutions Section -->
+                        <div class="solutions-section">
+                            <div class="section-header">SPRINT SOLUTIONS</div>
+                    
+                            <div class="solutions-grid">
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">The Data Project</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">"Ask-IMBeezy" Custom GPT</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-test-drive Channel</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">#AI-showcase Channel</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Custom Ops GPTs</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">Spark Rewards Program</div>
+                                    </div>
+                                </div>
+                    
+                                <div class="solution">
+                                    <div class="solution-circle">
+                                        <div class="solution-title">AI Office Hours</div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </section>
