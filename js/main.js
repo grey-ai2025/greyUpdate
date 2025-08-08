@@ -22,7 +22,6 @@ function login(event) {
         // Show welcome page and hide login form
         document.getElementById('loginForm').classList.add('hidden');
         document.getElementById('welcomePage').classList.remove('hidden');
-        document.getElementById('greeting').textContent = `Hello, ${username}!`;
 
         errorMessage.classList.add('hidden');
     } else {
@@ -405,12 +404,14 @@ async function generatePDF() {
             { title: 'About Your Report', id: 'about-report', page: 3 },
             { title: 'Assessment Methodology', id: 'methodology', page: 4 },
             { title: 'Executive Summary', id: 'executive-summary', page: 5 },
-            { title: 'Division Overview', id: 'Division', page: 7 },
-            { title: 'Finance & Accounting', id: 'Finance', page: 8 },
+            { title: 'Division Overview', id: 'Division', page: 6 },
+            { title: 'Division Performance', id: 'DivisionPerformance', page: 7 },
+            { title: 'Division Performance (Cont.)', id: 'DivisionPerformanceTwo', page: 8 },
+            { title: 'Finance & Accounting', id: 'Finance', page: 9 },
             { title: 'Investments', id: 'Investments', page: 10 },
-            { title: 'Business Development', id: 'BusinessDevelopment', page: 12 },
-            { title: 'CEO & Operations', id: 'CEOOperations', page: 14 },
-            { title: 'Evidence & Documentation', id: 'evidence', page: 16 }
+            { title: 'Business Development', id: 'BusinessDevelopment', page: 11 },
+            { title: 'CEO & Operations', id: 'CEOOperations', page: 12 },
+            { title: 'Evidence & Documentation', id: 'evidence', page: 13 }
         ];
 
         pdf.setFontSize(14);
@@ -582,3 +583,259 @@ async function generatePDF() {
         if (pdfOverlay) pdfOverlay.classList.remove('active');
     }
 }
+
+// Data for radar chart - using only SPARK color scheme with better contrast
+const data = {
+    labels: ['AI Literacy', 'Sharing Culture', 'Attitude & Initiative', 'Company Processes & Resources'],
+    datasets: [
+        {
+            label: 'Finance & Accounting',
+            data: [59, 27, 70, 46],
+            color: '#f5f5f5', // spark-light-gray
+            opacity: 0.7,
+            strokeWidth: 2
+        },
+        {
+            label: 'Investments',
+            data: [63, 47, 64, 54],
+            color: '#9A9A9A', // spark-gray
+            opacity: 0.5,
+            strokeWidth: 2
+        },
+        {
+            label: 'Business Development',
+            data: [69, 58, 74, 56],
+            color: '#ADFBF6', // spark-cyan
+            opacity: 0.6,
+            strokeWidth: 3
+        },
+        {
+            label: 'CEO & Operations',
+            data: [66, 40, 65, 46],
+            color: '#434343', // spark-dark-gray
+            opacity: 0.4,
+            strokeWidth: 2
+        }
+    ]
+};
+
+// SVG setup
+const svg = document.getElementById('radarChart');
+const width = 800;
+const height = 700;
+const cx = width / 2;
+const cy = height / 2;
+const radius = 270; // Increased by 50%
+const levels = 10; // Show increments of 10
+const maxValue = 100;
+
+// Calculate angle for each axis
+const angleSlice = (Math.PI * 2) / data.labels.length;
+
+// Draw grid circles
+const gridCircles = document.getElementById('gridCircles');
+for (let level = 0; level < levels; level++) {
+    const levelRadius = (radius / levels) * (level + 1);
+    const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    circle.setAttribute('cx', cx);
+    circle.setAttribute('cy', cy);
+    circle.setAttribute('r', levelRadius);
+    circle.setAttribute('fill', 'none');
+
+    // Emphasize the 50 line (level 4) and 100 line (level 9)
+    if (level === 4) {
+        circle.setAttribute('stroke', '#e5e5e5');
+        circle.setAttribute('stroke-width', '1');
+    } else if (level === 9) {
+        circle.setAttribute('stroke', '#d0d0d0');
+        circle.setAttribute('stroke-width', '1.5');
+    } else {
+        circle.setAttribute('stroke', '#f0f0f0');
+        circle.setAttribute('stroke-width', '0.5');
+    }
+
+    gridCircles.appendChild(circle);
+
+    // Add value labels for each level
+    const value = ((level + 1) * maxValue) / levels;
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', cx + 5);
+    text.setAttribute('y', cy - levelRadius);
+    text.setAttribute('font-size', '10');
+    text.setAttribute('fill', '#9A9A9A');
+    text.textContent = value;
+    gridCircles.appendChild(text);
+}
+
+// Draw axes
+const axes = document.getElementById('axes');
+data.labels.forEach((label, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const x = cx + Math.cos(angle) * radius;
+    const y = cy + Math.sin(angle) * radius;
+
+    const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+    line.setAttribute('x1', cx);
+    line.setAttribute('y1', cy);
+    line.setAttribute('x2', x);
+    line.setAttribute('y2', y);
+    line.setAttribute('stroke', '#f0f0f0');
+    line.setAttribute('stroke-width', '0.5');
+    axes.appendChild(line);
+});
+
+// Draw labels
+const labels = document.getElementById('labels');
+data.labels.forEach((label, i) => {
+    const angle = angleSlice * i - Math.PI / 2;
+    const labelDistance = radius + 35; // Reduced distance to make room for multi-line labels
+    const x = cx + Math.cos(angle) * labelDistance;
+    const y = cy + Math.sin(angle) * labelDistance;
+
+    const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+    text.setAttribute('x', x);
+    text.setAttribute('y', y);
+    text.setAttribute('font-size', '12');
+    text.setAttribute('font-weight', '600');
+    text.setAttribute('fill', '#434343');
+
+    // Adjust text anchor based on position to prevent cutoff
+    if (i === 0) { // Top (AI Literacy)
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'auto');
+        text.textContent = label;
+    } else if (i === 1) { // Right (Sharing Culture) - split across 2 lines
+        text.setAttribute('text-anchor', 'start');
+        text.setAttribute('dominant-baseline', 'middle');
+
+        const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan1.setAttribute('x', x);
+        tspan1.setAttribute('dy', '-6');
+        tspan1.textContent = 'Sharing';
+        text.appendChild(tspan1);
+
+        const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan2.setAttribute('x', x);
+        tspan2.setAttribute('dy', '12');
+        tspan2.textContent = 'Culture';
+        text.appendChild(tspan2);
+    } else if (i === 2) { // Bottom (Attitude & Initiative)
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('dominant-baseline', 'hanging');
+
+        const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan1.setAttribute('x', x);
+        tspan1.setAttribute('dy', '-6');
+        tspan1.textContent = 'Attitude &';
+        text.appendChild(tspan1);
+
+        const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan2.setAttribute('x', x);
+        tspan2.setAttribute('dy', '12');
+        tspan2.textContent = 'Initiative';
+        text.appendChild(tspan2);
+    } else { // Left (Company Processes & Resources) - split across 3 lines
+        text.setAttribute('text-anchor', 'end');
+        text.setAttribute('dominant-baseline', 'middle');
+
+        const tspan1 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan1.setAttribute('x', x);
+        tspan1.setAttribute('dy', '-12');
+        tspan1.textContent = 'Company';
+        text.appendChild(tspan1);
+
+        const tspan2 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan2.setAttribute('x', x);
+        tspan2.setAttribute('dy', '12');
+        tspan2.textContent = 'Processes &';
+        text.appendChild(tspan2);
+
+        const tspan3 = document.createElementNS('http://www.w3.org/2000/svg', 'tspan');
+        tspan3.setAttribute('x', x);
+        tspan3.setAttribute('dy', '12');
+        tspan3.textContent = 'Resources';
+        text.appendChild(tspan3);
+    }
+
+    labels.appendChild(text);
+});
+
+// Draw data polygons - reordered for better visibility
+const dataPolygons = document.getElementById('dataPolygons');
+
+// Sort datasets so Business Development (leader) is drawn last
+const sortedDatasets = [...data.datasets].sort((a, b) => {
+    const maxA = Math.max(...a.data);
+    const maxB = Math.max(...b.data);
+    return maxA - maxB;
+});
+
+sortedDatasets.forEach((dataset, datasetIndex) => {
+    const points = dataset.data.map((value, i) => {
+        const angle = angleSlice * i - Math.PI / 2;
+        const distance = (value / maxValue) * radius;
+        const x = cx + Math.cos(angle) * distance;
+        const y = cy + Math.sin(angle) * distance;
+        return `${x},${y}`;
+    }).join(' ');
+
+    const polygon = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+    polygon.setAttribute('points', points);
+    polygon.setAttribute('fill', dataset.color);
+    polygon.setAttribute('fill-opacity', dataset.opacity);
+    polygon.setAttribute('stroke', dataset.color);
+    polygon.setAttribute('stroke-width', dataset.strokeWidth || '2');
+    polygon.style.transition = 'all 0.3s ease';
+
+    // Add hover effect
+    polygon.addEventListener('mouseenter', function () {
+        this.setAttribute('fill-opacity', Math.min(dataset.opacity + 0.2, 0.9));
+        this.setAttribute('stroke-width', (dataset.strokeWidth || 2) + 1);
+    });
+    polygon.addEventListener('mouseleave', function () {
+        this.setAttribute('fill-opacity', dataset.opacity);
+        this.setAttribute('stroke-width', dataset.strokeWidth || '2');
+    });
+
+    dataPolygons.appendChild(polygon);
+
+    // Animate polygon appearance
+    polygon.style.transformOrigin = `${cx}px ${cy}px`;
+    polygon.style.transform = 'scale(0)';
+    setTimeout(() => {
+        polygon.style.transform = 'scale(1)';
+    }, 100 + datasetIndex * 150);
+});
+
+// Draw data points
+const dataPoints = document.getElementById('dataPoints');
+sortedDatasets.forEach((dataset, datasetIndex) => {
+    dataset.data.forEach((value, i) => {
+        const angle = angleSlice * i - Math.PI / 2;
+        const distance = (value / maxValue) * radius;
+        const x = cx + Math.cos(angle) * distance;
+        const y = cy + Math.sin(angle) * distance;
+
+        const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        circle.setAttribute('cx', x);
+        circle.setAttribute('cy', y);
+        circle.setAttribute('r', '5');
+        circle.setAttribute('fill', dataset.color);
+        circle.setAttribute('stroke', 'white');
+        circle.setAttribute('stroke-width', '2');
+
+        // Add tooltip
+        const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+        title.textContent = `${dataset.label}\n${data.labels[i]}: ${value}`;
+        circle.appendChild(title);
+
+        dataPoints.appendChild(circle);
+
+        // Animate point appearance
+        circle.style.transformOrigin = `${x}px ${y}px`;
+        circle.style.transform = 'scale(0)';
+        setTimeout(() => {
+            circle.style.transform = 'scale(1)';
+        }, 200 + datasetIndex * 150);
+    });
+});
