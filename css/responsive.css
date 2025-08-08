@@ -7,6 +7,11 @@
     .logout-btn {
         padding: 0.5rem;
     }
+
+    .pillars-grid-quickwins {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+    }
 }
 
 /* Responsive adjustments */
@@ -16,8 +21,9 @@
     }
     
     .header-content {
-        flex-direction: column;
-        align-items: flex-start;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
     }
     
     .header-left h1 {
@@ -37,6 +43,8 @@
     
     .sidebar-wrapper {
         width: 250px;
+        top: 130px;
+        height: calc(100vh - 130px);
     }
     
     .main-content-wrapper {
@@ -45,19 +53,35 @@
     
     .sidebar-toggle {
         display: flex !important;
-        top: 130px;
     }
 
-    .pillars-grid-grey {
-        display: grid;
-        grid-template-columns: repeat(6, 1fr);
-        gap: 25px;
-        margin-top: 20px;
-        grid-auto-rows: minmax(180px, auto);
+     .pillars-grid-quickwins {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
     }
 
     .stepped-scale {
         transform: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 20px;
+    }
+
+    .step:nth-child(1) .step-block,
+    .step:nth-child(2) .step-block,
+    .step:nth-child(3) .step-block,
+    .step:nth-child(4) .step-block,
+    .step:nth-child(5) .step-block {
+        height: auto;
+        padding: 20px;
+    }
+
+    .step-descriptors {
+        position: relative;
+        bottom: auto;
+        left: auto;
+        right: auto;
+        margin-top: 10px;
     }
 
     .section {
@@ -78,23 +102,24 @@
         padding: 1rem;
     }
 
-    .score-grid {
+    /* .score-grid {
         grid-template-columns: repeat(2, 1fr);
-    }
+    } */
     
     /* Hide button text on very small screens */
     .button-text {
         display: inline;
     }
 
-    .pillars-header-row,
+    /* .pillars-header-row,
     .pillars-content-row {
         grid-template-columns: 1fr;
     }
 
     .pillar-content-item {
         min-height: auto;
-    }
+    } */
+    
 }
 
 /* Print styles */
@@ -138,10 +163,14 @@
 }
 
 /* Responsive adjustments */
-@media (max-width: 1200px) {
+@media (max-width: 992px) {
     .pillars-header-row,
     .pillars-content-row {
         grid-template-columns: repeat(2, 1fr);
     }
 
+    .main-content {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
 }
