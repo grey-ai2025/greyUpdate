@@ -200,7 +200,7 @@ button:hover {
     position: fixed;
     left: 20px;
     top: 90px;
-    z-index: 999;
+    z-index: 1001;
 }
 
 .sidebar-toggle:hover {
@@ -720,6 +720,7 @@ button:hover {
     transition: all 0.3s ease;
     width: 100%;
     max-width: 450px;
+    overflow-wrap: break-word;
 }
 
 /* Add these new styles for the GREY pillars specifically */
@@ -1074,12 +1075,12 @@ button:hover {
     font-size: 0.9rem;
 }
 
-.score-grid {
+/* .score-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 15px;
     margin-bottom: 30px;
-}
+} */
 
 .score-card {
     background: #fff;
@@ -1174,6 +1175,7 @@ div[style*="background: #14b8a6"] ul li {
 /* Smooth scroll behavior */
 html {
     scroll-behavior: smooth;
+    overflow-x: hidden;
 }
 
 /* Navigation Buttons */
@@ -1241,7 +1243,6 @@ html {
     align-items: center;
     gap: 15px;
     margin-bottom: 30px;
-    flex-wrap: wrap;
   }
 
   .testimonial-card {
