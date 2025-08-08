@@ -54,7 +54,6 @@ document.addEventListener('DOMContentLoaded', function () {
         // User is logged in, show welcome page
         document.getElementById('loginForm').classList.add('hidden');
         document.getElementById('welcomePage').classList.remove('hidden');
-        document.getElementById('greeting').textContent = `Hello, ${username}!`;
     } else {
         // Ensure login form is visible
         document.getElementById('loginForm').classList.remove('hidden');
@@ -87,6 +86,32 @@ function getScoreClass(score) {
     if (numScore <= 65) return 'medium';
     if (numScore <= 75) return 'medium-high';
     return 'high';
+}
+
+// Function to dynamically update sidebar position based on header height
+function updateSidebarPosition() {
+    const header = document.getElementById('headerWrapper');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarWrapper = document.getElementById('sidebarWrapper');
+    const mainContent = document.getElementById('mainContent');
+
+    if (header && sidebarToggle && sidebarWrapper && mainContent) {
+        if (window.innerWidth <= 768) {
+            const headerHeight = header.offsetHeight;
+            const topPosition = headerHeight + 10; // 10px margin
+
+            sidebarToggle.style.top = `${topPosition}px`;
+            sidebarWrapper.style.top = `${topPosition}px`;
+            sidebarWrapper.style.height = `calc(100vh - ${topPosition}px)`;
+            mainContent.style.paddingTop = `${headerHeight}px`;
+        } else {
+            // Reset styles for larger screens to default
+            sidebarToggle.style.top = ''; // Use CSS default
+            sidebarWrapper.style.top = ''; // Use CSS default
+            sidebarWrapper.style.height = ''; // Use CSS default
+            mainContent.style.paddingTop = ''; // Use CSS default
+        }
+    }
 }
 
 // Apply dynamic colors to all score elements
@@ -203,6 +228,16 @@ document.addEventListener('DOMContentLoaded', function () {
             toggleIcon.classList.add('bi-arrow-right');
         }
     }
+
+
+});
+
+// Update sidebar on window resize
+window.addEventListener('load', updateSidebarPosition);
+let resizeTimeout;
+window.addEventListener('resize', function() {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(updateSidebarPosition, 100);
 });
 
 function scrollToSection(sectionId) {
